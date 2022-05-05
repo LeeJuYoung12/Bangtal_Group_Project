@@ -139,7 +139,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="bangtal_group_project.cpp" />
+    <ClCompile Include="game1.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Lobby.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
