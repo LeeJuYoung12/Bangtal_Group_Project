@@ -140,10 +140,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game1.cpp" />
-    <ClCompile Include="game2.cpp" />
-    <ClCompile Include="game3.cpp" />
-    <ClCompile Include="game4.cpp" />
-    <ClCompile Include="game5.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Lobby.cpp" />
   </ItemGroup>
