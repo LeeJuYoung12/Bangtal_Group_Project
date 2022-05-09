@@ -5,7 +5,7 @@
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern int nowgamenum;
 
-
+SceneID g4_scene;
 
 // 마우스콜백함수
 void game4_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
