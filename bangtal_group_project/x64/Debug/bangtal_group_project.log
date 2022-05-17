@@ -1,0 +1,15 @@
+﻿  game1.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\game1.cpp(7,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  game2.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\game2.cpp(3,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  game3.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\game3.cpp(3,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  game4.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\game4.cpp(3,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  game5.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\game5.cpp(3,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  main.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\main.cpp(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  Lobby.cpp
+C:\Users\82106\Desktop\기컴프 조별과제\bangtal_group_project\Lobby.cpp(2,10): fatal error C1083: 포함 파일을 열 수 없습니다. 'bangtal.h': No such file or directory
+  코드를 생성하고 있습니다...

@@ -6,7 +6,7 @@ extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool
 extern SceneID g1_scene;
 
 SceneID lobbyscene, mapscene;
-ObjectID startbutton, portalbutton[5];
+ObjectID startbutton, endbutton, portalbutton[5];
 // 0가 왼쪽위, 1이 왼쪽아래, 2가 오른쪽아래, 3이 오른쪽위, 4가 가운데
 int portalX[5] = { 240, 305, 920, 930, 580 };
 int portalY[5] = { 500, 170, 140, 490, 310 };
@@ -25,6 +25,10 @@ void lobby_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
   	if (object == portalbutton[0]) {
 		enterScene(g1_scene);
 		nowgamenum = 1;
+	}
+
+	if (object == endbutton) {
+		endGame();
 	}
 }
 
@@ -48,8 +52,9 @@ void lobby_main() {
 	lobbyscene = createScene("lobby", "image/startback.png");
 	mapscene = createScene("map", "image/map.png");
 
-	startbutton = createObject("image/start.png", lobbyscene, 480, 200, true, 1.0f);
-	
+	startbutton = createObject("image/start.png", lobbyscene, 150, 250, true, 0.7f);
+	endbutton = createObject("image/end.png", lobbyscene, 150, 150, true, 0.7f);
+
 	for (int i = 0; i < 5; i++) {
 		portalbutton[i] = createObject("image/portal.png", mapscene, portalX[i], portalY[i], true, 0.2f);
 	}
