@@ -23,10 +23,16 @@ void lobby_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		enterScene(mapscene);
 	}
 
-  	if (object == portalbutton[0]) {
+	if (object == portalbutton[0]) {
 		enterScene(g1_scene);
 		stopSound(introbgm);
 		nowgamenum = 1;
+	}
+
+	if (object == portalbutton[1]) {
+		enterScene(g2_scene);
+		stopSound(introbgm);
+		nowgamenum = 2;
 	}
 
 	if (object == portalbutton[3]) {
@@ -72,4 +78,6 @@ void lobby_main() {
 
 	introbgm = createSound("sound/lobby/intro.mp3");
 	playSound(introbgm);
+
+
 }
