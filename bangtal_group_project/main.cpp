@@ -92,10 +92,10 @@ void keyboardCallback(KeyCode code, KeyState state) {
 
 	lobby_keyboardCallback(code, state);
 	game1_keyboardCallback(code, state);
-	game1_keyboardCallback(code, state);
-	game1_keyboardCallback(code, state);
-	game1_keyboardCallback(code, state);
-	game1_keyboardCallback(code, state);
+	game2_keyboardCallback(code, state);
+	game3_keyboardCallback(code, state);
+	game4_keyboardCallback(code, state);
+	game5_keyboardCallback(code, state);
 }
 
 

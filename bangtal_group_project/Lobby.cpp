@@ -3,10 +3,11 @@
 #include <stdio.h>
 
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
-extern SceneID g1_scene;
-
+extern SceneID g1_scene, g2_scene, g3_scene, g4_scene;
+extern SoundID g4_mapbgm;
 SceneID lobbyscene, mapscene;
 ObjectID startbutton, endbutton, portalbutton[5];
+SoundID introbgm;
 // 0가 왼쪽위, 1이 왼쪽아래, 2가 오른쪽아래, 3이 오른쪽위, 4가 가운데
 int portalX[5] = { 240, 305, 920, 930, 580 };
 int portalY[5] = { 500, 170, 140, 490, 310 };
@@ -24,7 +25,15 @@ void lobby_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
   	if (object == portalbutton[0]) {
 		enterScene(g1_scene);
+		stopSound(introbgm);
 		nowgamenum = 1;
+	}
+
+	if (object == portalbutton[3]) {
+		enterScene(g4_scene);
+		stopSound(introbgm);
+		playSound(g4_mapbgm);
+		nowgamenum = 4;
 	}
 
 	if (object == endbutton) {
@@ -39,7 +48,9 @@ void lobby_timerCallback(TimerID timer) {
 
 //사운드콜백함수
 void lobby_soundCallback(SoundID sound) {
-
+	if (sound == introbgm) {
+		playSound(introbgm);
+	}
 }
 
 //키보드콜백함수
@@ -58,4 +69,7 @@ void lobby_main() {
 	for (int i = 0; i < 5; i++) {
 		portalbutton[i] = createObject("image/portal.png", mapscene, portalX[i], portalY[i], true, 0.2f);
 	}
+
+	introbgm = createSound("sound/lobby/intro.mp3");
+	playSound(introbgm);
 }

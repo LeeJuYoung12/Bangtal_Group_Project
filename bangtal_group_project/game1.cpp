@@ -16,7 +16,7 @@ int g1_ghost_x[17] = { 1000, 950, 900, 850, 800, 750, 700, 650, 600, 550, 500, 4
 int g1_ghost_y[17] = { 400, 50, 400, 50, 400, 50, 400, 50, 400, 50, 400, 50, 400, 50 ,600,600,500};
 int g1_box_x[16] = { 650,700,750,800,850,900,950,1000, 650,700,750,800,850,900,950,1000};
 int g1_box_y[16] = { 600, 600, 600, 600, 600, 600, 600, 600, 550, 550, 550, 550, 550, 550, 550, 550};
-int g1_speed = 1, g1dx = 0, g1dy = 0, g1cx = 52, g1cy= 52, g1_ghost_speed=5, g1_chway=3, g1_attackeffectx, g1_attackeffecty, g1_effectspeed = 4;
+int g1_speed = 5, g1dx = 0, g1dy = 0, g1cx = 52, g1cy= 52, g1_ghost_speed=5, g1_chway=3, g1_attackeffectx, g1_attackeffecty, g1_effectspeed = 4;
 long long g1_attacknum = 1;
 
 bool g1_ghostway[16] = { true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, true};
@@ -99,7 +99,7 @@ void g1_block() {
 	}
 }
 
-void g1_ghostmove() {
+void g1_ghostmove() { 
 	//방향 정하기
 	for (int i = 0; i < 14; i++) {
 		if (g1_ghost_y[i] <= 50) {
