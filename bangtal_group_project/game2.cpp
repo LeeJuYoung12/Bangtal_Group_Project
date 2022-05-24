@@ -1,7 +1,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define g2_ch_width 45*0.7
 #define g2_ch_height 85*0.7
+//1200 700 
 #define JUMP_POWER 15
+#define g2_display_height 720
+#define max_speed 25
 #include <stdio.h>
 #include <bangtal.h>
 #include <list> 
@@ -13,13 +16,13 @@ extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool
 extern int nowgamenum;
 extern SoundID introbgm;
 
-int g2_speed = 4, g2dx = 0, g2cx = 30, g2cy = 1000;
+int g2_speed = 4, g2dx = 0, g2cx = 30, g2cy = 100;
 
-float g2_gravity = 9, g2_jumpPower=0,g2_jumpTime=0,height;
+float g2_gravity = 9, g2_jumpPower=0,g2_jumpTime=0,height=0;
 bool g2_jumping = true, g2_playing = false, g2_landing=false;
 
 
-SceneID g2_scene, g2_scene2;
+SceneID g2_scene, g2_scene2, g2_scene3;
 ObjectID g2ch;
 ObjectID g2_gomapbutton, g2_restartbutton, g2_endingbutton, g2_deathback, g2_clearback, g2_startbutton;
 ObjectID g2_endingch, g2_endgame;
@@ -47,7 +50,7 @@ class Floor {
 			
 };
 
-list<Floor> land;
+list<Floor> scene_land, scene2_land, scene3_land;
 
 
 bool pointInRectangle(int x, int y, int rx, int ry, float x_size,float y_size) {
@@ -63,12 +66,28 @@ bool pointInRectangle(int x, int y, int rx, int ry, float x_size,float y_size) {
 
 //캐릭터 움직임 제어
 bool g2_block() {
+	list<Floor> land;
+	int local_g2cy;
+	if (g2cy > g2_display_height*2) {
+		land = scene3_land;
+		local_g2cy = g2cy - g2_display_height*2;
+	}
+	else if (g2cy > g2_display_height) {
+		land = scene2_land;
+		local_g2cy = g2cy - g2_display_height;
+	}
+	else {
+		land = scene_land;
+		local_g2cy = g2cy;
+	}
 	for (Floor val : land) {
 
-		bool b1 = pointInRectangle(g2cx+30, g2cy + 20, val.x, val.y, val.x_size, val.y_size);
-		bool b2 = pointInRectangle(g2cx+30 , g2cy + 60, val.x, val.y, val.x_size, val.y_size);
-		bool b3 = pointInRectangle(g2cx+15 , g2cy + 20, val.x, val.y, val.x_size, val.y_size);
-		bool b4 = pointInRectangle(g2cx+30 , g2cy, val.x, val.y, val.x_size, val.y_size);
+
+
+		bool b1 = pointInRectangle(g2cx+30, local_g2cy + 20, val.x, val.y, val.x_size, val.y_size);
+		bool b2 = pointInRectangle(g2cx+30 , local_g2cy + 60, val.x, val.y, val.x_size, val.y_size);
+		bool b3 = pointInRectangle(g2cx+15 , local_g2cy + 20, val.x, val.y, val.x_size, val.y_size);
+		bool b4 = pointInRectangle(g2cx+30 , local_g2cy, val.x, val.y, val.x_size, val.y_size);
 		if (b1 ) {
 			printf("b1\n");
 			/*
@@ -104,7 +123,7 @@ bool g2_block() {
 		}
 			
 		else if (b4) {
-			printf("b4\n");
+			//printf("b4\n");
 			g2_jumpPower = JUMP_POWER;
 			g2_jumping = false;
 			g2_jumpTime = 0;
@@ -121,8 +140,8 @@ bool g2_block() {
 void g2_jump() {
 
 	height = (g2_jumpTime * g2_jumpTime * (-g2_gravity) / 2) + (g2_jumpPower);
-	
-		if (height > 0) {
+
+		if (height >= 0) {
 			for (int i = 0; i < height; i++) {
 				if (!g2_jumping)
 					break;
@@ -131,7 +150,10 @@ void g2_jump() {
 					break;
 			}
 		}
+
 		else {
+			height = (height < -max_speed) ? -max_speed : height;
+			printf("%f\n", height);
 			for (int i = 0; i < - height; i++) {
 				if (!g2_jumping)
 					break;
@@ -141,29 +163,41 @@ void g2_jump() {
 		}
 
 	g2_jumpTime += 0.1f;
-	g2_block();
 	
 }
-void makeAndPush(const char* url,int x, int y, int x_size, int y_size){
+void makeAndPush(const char* url,SceneID scene,int x, int y, int x_size, int y_size){
 
-	createObject(url, g2_scene, x, y, true, 1); 
+	createObject(url, scene, x, y, true, 1);
 
 	Floor map1(x, y, x_size, y_size);
-	land.push_back(map1);
+
+	if (scene == g2_scene) {
+		scene_land.push_back(map1);
+	}
+	else if (scene == g2_scene2) {
+		scene2_land.push_back(map1);
+	}
+		
+
 }
 
 void g2_settingMap() {
  // 가로: 1100*0.4 세로:290*0.4
+	
+	makeAndPush("image/game2/floor1.png", g2_scene, -20, 40, 1030, 33);
+	makeAndPush("image/game2/floor1.png", g2_scene, 980, 40, 1000, 40);
 
-	makeAndPush("image/game2/floor1.png", -20, 40, 1030, 33);
-	makeAndPush("image/game2/floor1.png", 980, 40, 1000, 40);
-
-	makeAndPush("image/game2/floor2.png", 200, 180, 150, 40);
-	makeAndPush("image/game2/floor2.png", 400, 300, 155, 40);
-	makeAndPush("image/game2/floor2.png", 600, 420, 155, 40);
-	makeAndPush("image/game2/floor2.png", 400, 540, 155, 40);
-	makeAndPush("image/game2/floor2.png", 200, 660, 155, 40);
-
+	makeAndPush("image/game2/floor2.png", g2_scene, 200, 180, 150, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene, 400, 300, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene,600, 420, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene,400, 540, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene,200, 660, 155, 40);
+	
+	makeAndPush("image/game2/floor2.png", g2_scene2, 400, 50, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene2, 600, 200, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene2, 400, 350, 155, 40);
+	makeAndPush("image/game2/floor2.png", g2_scene2, 200, 500, 155, 40);
+	
 	//150 40
 	
 }
@@ -244,28 +278,73 @@ void game2_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 //타이머콜백함수
 void game2_timerCallback(TimerID timer) {
 	//캐릭터 움직임
-
 	if (timer == g2_move_t) {
 		g2cx += g2dx;
 
 		if (g2_jumping) {
 			g2_jump();
 		}
+		if (g2cy > g2_display_height * 2) {
+			locateObject(g2ch, g2_scene2, g2cx, g2cy - g2_display_height*2);
+		}
+		else if (g2cy > g2_display_height) {
+			locateObject(g2ch, g2_scene2, g2cx, g2cy-g2_display_height);
+		}
+		else {
 		locateObject(g2ch, g2_scene, g2cx, g2cy);
+		}
+
 		setTimer(g2_move_t, 0.01f);
 		startTimer(g2_move_t);
 	}
 
+	//맵 변경
 	if (timer == g2_update_t) {
+
+		
+		if (g2cy > g2_display_height*2) {
+				enterScene(g2_scene3);
+
+			}
+		else if (g2cy > g2_display_height) {
+			enterScene(g2_scene2);
+		
+		}
+		else {
+			enterScene(g2_scene);
+
+		}
+
+		setTimer(g2_update_t, 0.01f);
+		startTimer(g2_update_t);
+	}
+
+	//낙하 확인
+	if (timer == g2_block_t) {
+
 		if (!g2_jumping) {
 			g2_jumpPower = 0;
 			g2_jumping = true;
 			g2_jumpTime = 0;
 
+			list<Floor> land;
+			int local_g2cy;
+			if (g2cy > g2_display_height*2) {
+				land = scene3_land;
+				local_g2cy = g2cy - g2_display_height*2;
+			}
+			else if (g2cy > g2_display_height) {
+				land = scene2_land;
+				local_g2cy = g2cy - g2_display_height;
+			}
+			else {
+				land = scene_land;
+				local_g2cy = g2cy;
+			}
+
 			for (Floor val : land) {
-				bool b4 = pointInRectangle(g2cx + 30, g2cy, val.x, val.y, val.x_size, val.y_size);
+				bool b4 = pointInRectangle(g2cx + 30, local_g2cy, val.x, val.y, val.x_size, val.y_size);
 				if (b4) {
-					printf("b4\n");
 					g2_jumpPower = JUMP_POWER;
 					g2_jumping = false;
 					g2_jumpTime = 0;
@@ -273,12 +352,6 @@ void game2_timerCallback(TimerID timer) {
 				}
 			}
 		}
-		setTimer(g2_update_t, 0.01f);
-		startTimer(g2_update_t);
-	}
-
-	if (timer == g2_block_t) {
-		//g2_block();
 
 		setTimer(g2_block_t, 0.01f);
 		startTimer(g2_block_t);
@@ -295,12 +368,10 @@ void game2_soundCallback(SoundID sound) {
 
 //키보드콜백함수
 void game2_keyboardCallback(KeyCode code, KeyState state) {
+
 	if (nowgamenum == 2 && g2_playing) {
 		if (code == KeyCode::KEY_UP_ARROW && g2_jumping==false) {			// UP
-			//g2_gravity += (state == KeyState::KEY_PRESSED ? g2_jumpSpeed : 0);
 			g2_jumping = true;
-
-
 		}
 		if (code == KeyCode::KEY_RIGHT_ARROW) {		// RIGHT
 			setObjectImage(g2ch, "image/game2/character.png");
@@ -320,8 +391,10 @@ void game2_keyboardCallback(KeyCode code, KeyState state) {
 void game2_main() {
 
 	//배경
-	g2_scene = createScene("game4", "image/game2/background.png");
-	
+	g2_scene = createScene("game2", "image/game2/background.png");
+	g2_scene2 = createScene("game2", "image/game2/background.png");
+	g2_scene3 = createScene("game2", "image/game2/background.png");
+
 	//캐릭터
 	g2ch = createObject("image/game2/character.png", g2_scene, g2cx, g2cy, true, 0.7f);
 
@@ -342,7 +415,7 @@ void game2_main() {
 	g2_move_t = createTimer(0.01f);
 	g2_update_t = createTimer(0.01f);
 	g2_block_t = createTimer(0.01f);
-	g2_jump_t = createTimer(0.03f);
+	
 
 
 }
