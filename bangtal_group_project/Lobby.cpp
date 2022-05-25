@@ -23,26 +23,32 @@ void lobby_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		enterScene(mapscene);
 	}
 
-	if (object == portalbutton[0]) {
+	else if (object == portalbutton[0]) {
 		enterScene(g1_scene);
 		stopSound(introbgm);
 		nowgamenum = 1;
 	}
 
-	if (object == portalbutton[1]) {
+	else if (object == portalbutton[1]) {
 		enterScene(g2_scene);
 		stopSound(introbgm);
 		nowgamenum = 2;
 	}
 
-	if (object == portalbutton[3]) {
+	else if (object == portalbutton[2]) {
+		enterScene(g3_scene);
+		stopSound(introbgm);
+		nowgamenum = 3;
+	}
+
+	else if (object == portalbutton[3]) {
 		enterScene(g4_scene);
 		stopSound(introbgm);
 		playSound(g4_mapbgm);
 		nowgamenum = 4;
 	}
 
-	if (object == endbutton) {
+	else if (object == endbutton) {
 		endGame();
 	}
 }
