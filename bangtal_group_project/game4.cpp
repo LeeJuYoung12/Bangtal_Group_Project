@@ -9,15 +9,15 @@ extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool
 extern int nowgamenum;
 extern SoundID introbgm;
 
-int g4_speed = 4, g4dx = 0, g4cx = 30, g4cy = 290*0.4-1, g4_attackeffectx[2], g4_attackeffecty[2], g4_effectspeed = 25;
+int g4_speed = 4, g4dx = 0, g4cx = 30, g4cy = 290 * 0.4 - 1, g4_attackeffectx[2], g4_attackeffecty[2], g4_effectspeed = 25;
 int g4_bottomy[4] = { 0, 240, 390, 540 };
 int g4_bottomx[4] = { -150, 50, 50, 50 };
 int g4_gravity = 20, g4_jumpcount;
-int g4_bossx = 850, g4_bossy = 300, g4_bossspeed=12;
+int g4_bossx = 850, g4_bossy = 300, g4_bossspeed = 12;
 int g4_firex, g4_firey, g4_beamx, g4_beamy, g4_firecount = 0, g4_heartnum = 15;
-int g4_endingchx=100, g4_endingchy=150;
-bool g4_attacking1 = false, g4_attacking2 = false, g4_jumping = false, g4_rising = false, g4_downing = false, g4_island= true, g4_posture1=true, g4_posture2 =true;
-bool g4_bossway = true, g4_beaming = false, g4_beamok=false, g4_playing=false;
+int g4_endingchx = 100, g4_endingchy = 150;
+bool g4_attacking1 = false, g4_attacking2 = false, g4_jumping = false, g4_rising = false, g4_downing = false, g4_island = true, g4_posture1 = true, g4_posture2 = true;
+bool g4_bossway = true, g4_beaming = false, g4_beamok = false, g4_playing = false;
 bool g4_attackable1 = true, g4_attackable2 = true;
 long long g4_bossanimation_count = 0, g4_endcount = 0;
 const char* g4_bossimage[4] = { "image/game4/dragon1.png" , "image/game4/dragon2.png" , "image/game4/dragon3.png" , "image/game4/dragon4.png" };
@@ -28,9 +28,9 @@ ObjectID g4ch, g4_attackeffect[2], g4_floor[4], g4_boss, g4_fire, g4_square, g4_
 ObjectID g4_gomapbutton, g4_restartbutton, g4_endingbutton, g4_deathback, g4_clearback, g4_startbutton;
 ObjectID g4_endingch, g4_endgame;
 TimerID g4_move_t, g4_update_t, g4_effectmove_t, g4_effectmove2_t, g4_jump_t, g4_block_t, g4_posture1_t, g4_posture2_t, g4_bossmove_t;
-TimerID g4_bossanimation_t, g4_firemove_t, g4_firecool_t, g4_hidesquare_t,g4_hidebeam_t, g4_beam_t, g4_beamcool_t, g4_heart_t;
+TimerID g4_bossanimation_t, g4_firemove_t, g4_firecool_t, g4_hidesquare_t, g4_hidebeam_t, g4_beam_t, g4_beamcool_t, g4_heart_t;
 TimerID g4_ending_t, g4_endanimation_t;
-SoundID g4_mapbgm,g4_endingbgm, g4_breathbgm, g4_firebgm;
+SoundID g4_mapbgm, g4_endingbgm, g4_breathbgm, g4_firebgm;
 
 //캐릭터 움직임 제어
 void g4_block() {
@@ -44,7 +44,7 @@ void g4_block() {
 			g4cy -= (g4_gravity - 5);
 			locateObject(g4ch, g4_scene, g4cx, g4cy);
 		}
-		else if ((((((g4cx) > 50) && (((g4cx) < 200)))|| ((g4cx+95*0.7) > 50) && (((g4cx+95*0.7) < 200)))) && (((g4cy > (g4_bottomy[1] + 35)) && ((g4cy < (g4_bottomy[1] + 150)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[1] + 35)) && ((g4cy < (g4_bottomy[1] + 150)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
@@ -63,14 +63,14 @@ void g4_block() {
 			}
 		}
 		//버그
-		else if ((((((g4cx) > 50) && (((g4cx) < 20))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[0]+290*0.4)) && ((g4cy < (g4_bottomy[0] +290*0.4+10)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 20))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[0] + 290 * 0.4)) && ((g4cy < (g4_bottomy[0] + 290 * 0.4 + 10)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
 			}
 		}
 		//버그
-		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[1])) && ((g4cy < (g4_bottomy[1]+25)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[1])) && ((g4cy < (g4_bottomy[1] + 25)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
@@ -91,21 +91,21 @@ void g4_block() {
 			}
 		}
 		//버그2
-		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[1]-130)) && ((g4cy < (g4_bottomy[1] + 25)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[1] - 130)) && ((g4cy < (g4_bottomy[1] + 25)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
 			}
 		}
 		//버그2
-		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[2]-150+40)) && ((g4cy < (g4_bottomy[2] + 25)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[2] - 150 + 40)) && ((g4cy < (g4_bottomy[2] + 25)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
 			}
 		}
 		//버그2
-		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[3]-150+40)) && ((g4cy < (g4_bottomy[3] + 25)))))) {
+		else if ((((((g4cx) > 50) && (((g4cx) < 200))) || ((g4cx + 95 * 0.7) > 50) && (((g4cx + 95 * 0.7) < 200)))) && (((g4cy > (g4_bottomy[3] - 150 + 40)) && ((g4cy < (g4_bottomy[3] + 25)))))) {
 			if (g4_downing == false) {
 				g4cy -= (g4_gravity - 5);
 				locateObject(g4ch, g4_scene, g4cx, g4cy);
@@ -115,15 +115,15 @@ void g4_block() {
 
 	}
 
-	
+
 
 	if ((g4cx < -5)) {
-		g4cx=-5;
+		g4cx = -5;
 		locateObject(g4ch, g4_scene, g4cx, g4cy);
 	}
 	//버그방지
 	if ((g4cx < (1100 * 0.4 - 150)) && (g4cy < (290 * 0.4))) {
-		g4cy = (290-13) * 0.4;
+		g4cy = (290 - 13) * 0.4;
 		locateObject(g4ch, g4_scene, g4cx, g4cy);
 	}
 
@@ -136,8 +136,8 @@ void g4_jump() {
 	if (g4_rising) { //상승
 		g4cy += g4_gravity;
 
-		if (g4_jumpcount>=8) {
-			g4cy -= (g4_gravity-5);
+		if (g4_jumpcount >= 8) {
+			g4cy -= (g4_gravity - 5);
 			g4_rising = false;
 			g4_downing = true;
 		}
@@ -149,16 +149,16 @@ void g4_jump() {
 	}
 	else //착지
 	{
-		g4cy -= g4_gravity-5;
+		g4cy -= g4_gravity - 5;
 		//ch사진에서 20*0.7은 가로의 왼쪽 여백, 10*0.7은 세로의 아래부분 여백
-		if (((g4cx+20*0.7) < (g4_bottomx[0] + 1100*0.4)) && ((g4cx + 20*0.7 +g4_ch_width) > g4_bottomx[0]) && ((g4cy+10*0.7) < (g4_bottomy[0] + (290-20)*0.4)) && ((g4cy+10*0.7 + g4_ch_height) > g4_bottomy[0])) {
-			g4cy += (g4_gravity-5);
+		if (((g4cx + 20 * 0.7) < (g4_bottomx[0] + 1100 * 0.4)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_bottomx[0]) && ((g4cy + 10 * 0.7) < (g4_bottomy[0] + (290 - 20) * 0.4)) && ((g4cy + 10 * 0.7 + g4_ch_height) > g4_bottomy[0])) {
+			g4cy += (g4_gravity - 5);
 			g4_island = true;
 			stopTimer(g4_jump_t);
-	 	}
+		}
 		for (int i = 1; i <= 3; i++) {
-			if (((g4cx + 20 * 0.7) < (g4_bottomx[i] + 150)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_bottomx[i]) && ((g4cy + 10 * 0.7) < (g4_bottomy[i]+4 + 27)) && ((g4cy + 10 * 0.7 + g4_ch_height) > g4_bottomy[i]+4)) {
-				g4cy += (g4_gravity-5);
+			if (((g4cx + 20 * 0.7) < (g4_bottomx[i] + 150)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_bottomx[i]) && ((g4cy + 10 * 0.7) < (g4_bottomy[i] + 4 + 27)) && ((g4cy + 10 * 0.7 + g4_ch_height) > g4_bottomy[i] + 4)) {
+				g4cy += (g4_gravity - 5);
 				g4_island = true;
 				g4_downing = false;
 				stopTimer(g4_jump_t);
@@ -176,11 +176,11 @@ void g4_jump() {
 //캐릭터 공격
 void g4_attack() {
 
-		g4_attackeffectx[0] = g4cx + 5;
-		g4_attackeffecty[0] = g4cy + 50 * 0.7;
-		locateObject(g4_attackeffect[0], g4_scene, g4_attackeffectx[0], g4_attackeffecty[0]);
-		showObject(g4_attackeffect[0]);
-		startTimer(g4_effectmove_t);
+	g4_attackeffectx[0] = g4cx + 5;
+	g4_attackeffecty[0] = g4cy + 50 * 0.7;
+	locateObject(g4_attackeffect[0], g4_scene, g4_attackeffectx[0], g4_attackeffecty[0]);
+	showObject(g4_attackeffect[0]);
+	startTimer(g4_effectmove_t);
 }
 //캐릭터 공격
 void g4_attack2() {
@@ -245,12 +245,12 @@ void g4_beamfunc() {
 }
 //보스 체력
 void g4_heartfunc() {
-	if (g4_attackable1&&((g4_attackeffectx[0]) < (g4_bossx + 30)) && ((g4_attackeffectx[0]) > (g4_bossx)) && ((g4_attackeffecty[0]) < (g4_bossy + 270*1.2)) && ((g4_attackeffecty[0]+15) > (g4_bossy))) {
-		if(g4_heartnum>0)g4_heartnum--;
+	if (g4_attackable1 && ((g4_attackeffectx[0]) < (g4_bossx + 30)) && ((g4_attackeffectx[0]) > (g4_bossx)) && ((g4_attackeffecty[0]) < (g4_bossy + 270 * 1.2)) && ((g4_attackeffecty[0] + 15) > (g4_bossy))) {
+		if (g4_heartnum > 0)g4_heartnum--;
 		setObjectImage(g4_heart, g4_heartimage[g4_heartnum]);
 		g4_attackable1 = false;
 	}
-	if (g4_attackable2&&((g4_attackeffectx[1]) < (g4_bossx + 30)) && ((g4_attackeffectx[1]) > (g4_bossx)) && ((g4_attackeffecty[1]) < (g4_bossy + 270 * 1.2)) && ((g4_attackeffecty[1] + 15) > (g4_bossy))) {
+	if (g4_attackable2 && ((g4_attackeffectx[1]) < (g4_bossx + 30)) && ((g4_attackeffectx[1]) > (g4_bossx)) && ((g4_attackeffecty[1]) < (g4_bossy + 270 * 1.2)) && ((g4_attackeffecty[1] + 15) > (g4_bossy))) {
 		if (g4_heartnum > 0)g4_heartnum--;
 		setObjectImage(g4_heart, g4_heartimage[g4_heartnum]);
 		g4_attackable2 = false;
@@ -313,28 +313,28 @@ void g4_restart() {
 }
 //death
 void g4_death() {
-		if (((g4cx + 20 * 0.7) < (g4_firex + 100)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_firex) && ((g4cy + 10 * 0.7) < (g4_firey + 67)) && ((g4cy + 10 * 0.7 + g4_ch_height) > (g4_firey + 22))) {
-			
-			g4_restart();
-			showObject(g4_deathback);
-			showObject(g4_gomapbutton);
-			showObject(g4_restartbutton);
-		}
-		if (g4_beamok == true) {
-			if (((g4cx + 20 * 0.7) < (g4_beamx + 1280)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_beamx) && ((g4cy + 10 * 0.7) < (g4_beamy - 50 + 150)) && ((g4cy + 10 * 0.7 + g4_ch_height) > (g4_beamy - 50))) {
+	if (((g4cx + 20 * 0.7) < (g4_firex + 100)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_firex) && ((g4cy + 10 * 0.7) < (g4_firey + 67)) && ((g4cy + 10 * 0.7 + g4_ch_height) > (g4_firey + 22))) {
 
-				g4_restart();
-				showObject(g4_deathback);
-				showObject(g4_gomapbutton);
-				showObject(g4_restartbutton);
-			}
-		}
-		if (g4cy <= 0) {
+		g4_restart();
+		showObject(g4_deathback);
+		showObject(g4_gomapbutton);
+		showObject(g4_restartbutton);
+	}
+	if (g4_beamok == true) {
+		if (((g4cx + 20 * 0.7) < (g4_beamx + 1280)) && ((g4cx + 20 * 0.7 + g4_ch_width) > g4_beamx) && ((g4cy + 10 * 0.7) < (g4_beamy - 50 + 150)) && ((g4cy + 10 * 0.7 + g4_ch_height) > (g4_beamy - 50))) {
+
 			g4_restart();
 			showObject(g4_deathback);
 			showObject(g4_gomapbutton);
 			showObject(g4_restartbutton);
 		}
+	}
+	if (g4cy <= 0) {
+		g4_restart();
+		showObject(g4_deathback);
+		showObject(g4_gomapbutton);
+		showObject(g4_restartbutton);
+	}
 }
 void g4_clear() {
 	if (g4_heartnum == 0) {
@@ -349,11 +349,11 @@ void g4_clear() {
 
 // ending ch 움직임
 void g4_endingchmove() {
-		//좌표 바꾸기
-			g4_endingchx += 10;
-		//이동하기
-		locateObject(g4_endingch, g4_scene2, g4_endingchx, g4_endingchy);
-	
+	//좌표 바꾸기
+	g4_endingchx += 10;
+	//이동하기
+	locateObject(g4_endingch, g4_scene2, g4_endingchx, g4_endingchy);
+
 }
 
 // 마우스콜백함수
@@ -410,7 +410,7 @@ void game4_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 void game4_timerCallback(TimerID timer) {
 	//캐릭터 움직임
 	if (timer == g4_move_t) {
-		g4cx += g4dx; 
+		g4cx += g4dx;
 
 		locateObject(g4ch, g4_scene, g4cx, g4cy);
 		setTimer(g4_move_t, 0.01f);
@@ -432,11 +432,13 @@ void game4_timerCallback(TimerID timer) {
 				startTimer(g4_jump_t);
 			}
 		}
+		g4_death();
+		g4_clear();
 
 		setTimer(g4_update_t, 0.01f);
 		startTimer(g4_update_t);
 	}
-	
+
 	if (timer == g4_block_t) {
 		g4_block();
 
@@ -455,7 +457,7 @@ void game4_timerCallback(TimerID timer) {
 			g4_posture1 = false;
 		}
 		//없어지는 조건
-		if (g4_attackeffectx[0]>1280) {
+		if (g4_attackeffectx[0] > 1280) {
 			hideObject(g4_attackeffect[0]); locateObject(g4_attackeffect[0], g4_scene, 1500, 800);
 			g4_attackable1 = true;
 			g4_attacking1 = false;
@@ -502,7 +504,7 @@ void game4_timerCallback(TimerID timer) {
 		setObjectImage(g4ch, "image/game4/ch1.png");
 		setTimer(g4_posture2_t, 0.03f);
 	}
-	
+
 	//드래곤 움직이기
 	if (timer == g4_bossmove_t) {
 		g4_bossmove();
@@ -670,7 +672,7 @@ void game4_main() {
 	g4ch = createObject("image/game4/ch1.png", g4_scene, g4cx, g4cy, true, 0.7f);
 	g4_endingch = createObject("image/game4/endingch1.png", g4_scene2, g4_endingchx, g4_endingchy, true, 0.7f);
 	//바닥
-	g4_floor[0]= createObject("image/game4/floor1.png", g4_scene, -150, 0, true, 0.4f); // 가로: 1100*0.4 세로:290*0.4
+	g4_floor[0] = createObject("image/game4/floor1.png", g4_scene, -150, 0, true, 0.4f); // 가로: 1100*0.4 세로:290*0.4
 	g4_floor[1] = createObject("image/game4/floor2.png", g4_scene, 50, 240, true, 1.f); // 가로 : 150     세로: 40
 	g4_floor[2] = createObject("image/game4/floor2.png", g4_scene, 50, 390, true, 1.f); // 가로 : 150     세로: 40
 	g4_floor[3] = createObject("image/game4/floor2.png", g4_scene, 50, 540, true, 1.f); // 가로 : 150     세로: 40
