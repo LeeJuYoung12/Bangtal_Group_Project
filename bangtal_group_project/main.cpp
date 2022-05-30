@@ -1,4 +1,4 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
+#define _CRT_SECURE_NO_WARNINGS
 #include <bangtal.h>
 
 //외부변수 선언
@@ -18,7 +18,17 @@ extern void game1_timerCallback(TimerID timer);
 extern void game1_soundCallback(SoundID sound);
 extern void game1_keyboardCallback(KeyCode code, KeyState state);
 
+extern void game2_main();
+extern void game2_mouseCallback(ObjectID object, int x, int y, MouseAction action);
+extern void game2_timerCallback(TimerID timer);
+extern void game2_soundCallback(SoundID sound);
+extern void game2_keyboardCallback(KeyCode code, KeyState state);
 
+extern void game3_main();
+extern void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action);
+extern void game3_timerCallback(TimerID timer);
+extern void game3_soundCallback(SoundID sound);
+extern void game3_keyboardCallback(KeyCode code, KeyState state);
 
 extern void game4_main();
 extern void game4_mouseCallback(ObjectID object, int x, int y, MouseAction action);
@@ -49,8 +59,8 @@ void mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
 	lobby_mouseCallback(object, x, y, action);
 	game1_mouseCallback(object, x, y, action);
-
-
+	game2_mouseCallback(object, x, y, action);
+	game3_mouseCallback(object, x, y, action);
 	game4_mouseCallback(object, x, y, action);
 	game5_mouseCallback(object, x, y, action);
 }
@@ -60,8 +70,8 @@ void timerCallback(TimerID timer) {
 
 	lobby_timerCallback(timer);
 	game1_timerCallback(timer);
-
-
+	game2_timerCallback(timer);
+	game3_timerCallback(timer);
 	game4_timerCallback(timer);
 	game5_timerCallback(timer);
 }
@@ -71,8 +81,8 @@ void soundCallback(SoundID sound) {
 
 	lobby_soundCallback(sound);
 	game1_soundCallback(sound);
-
-
+	game2_soundCallback(sound);
+	game3_soundCallback(sound);
 	game4_soundCallback(sound);
 	game5_soundCallback(sound);
 }
@@ -82,8 +92,8 @@ void keyboardCallback(KeyCode code, KeyState state) {
 
 	lobby_keyboardCallback(code, state);
 	game1_keyboardCallback(code, state);
-
-
+	game2_keyboardCallback(code, state);
+	game3_keyboardCallback(code, state);
 	game4_keyboardCallback(code, state);
 	game5_keyboardCallback(code, state);
 }
@@ -102,8 +112,8 @@ int main() {
 
 	lobby_main();
 	game1_main();
-
-
+	game2_main();
+	game3_main();
 	game4_main();
 	game5_main();
 
