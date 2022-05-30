@@ -14,7 +14,7 @@ int g4_bottomy[4] = { 0, 240, 390, 540 };
 int g4_bottomx[4] = { -150, 50, 50, 50 };
 int g4_gravity = 20, g4_jumpcount;
 int g4_bossx = 850, g4_bossy = 300, g4_bossspeed=12;
-int g4_firex, g4_firey, g4_beamx, g4_beamy, g4_firecount = 0, g4_heartnum = 0;
+int g4_firex, g4_firey, g4_beamx, g4_beamy, g4_firecount = 0, g4_heartnum = 15;
 int g4_endingchx=100, g4_endingchy=150;
 bool g4_attacking1 = false, g4_attacking2 = false, g4_jumping = false, g4_rising = false, g4_downing = false, g4_island= true, g4_posture1=true, g4_posture2 =true;
 bool g4_bossway = true, g4_beaming = false, g4_beamok=false, g4_playing=false;
