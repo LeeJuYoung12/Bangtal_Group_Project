@@ -5,6 +5,8 @@
 
 #define INITIAL_PLAYER_X 700
 #define INITIAL_PLAYER_Y 80
+#define JUMP_POWER 7
+#define PLAYER_SPEED 3
 
 using namespace std;
 
@@ -13,7 +15,7 @@ extern int nowgamenum;
 extern SceneID mapscene;
 extern SoundID introbgm;
 
-bool g3_isPlaying = false, g3_isJumping = false, g3_isAttack = false;
+bool g3_isPlaying = false, g3_isAttack = false;
 
 float attack_anim_time = 3.f;
 
@@ -55,11 +57,13 @@ public:
 
 class Floor : public GameObject{
 public:
-	Floor(int x_, int y_, SceneID scene) :GameObject(x_, y_, 155, 40, "image/game3/floor2.png", scene){
+	Floor(int x_, int y_, SceneID scene) :GameObject(x_, y_, 120, 5, "image/game3/floor2.png", scene){
 		floors.push_back(*this);
+		setLocation(x, y-30);
 	}
 	Floor(int x_, int y_, int xSize, int ySize, const char* c, SceneID scene) :GameObject(x_, y_, xSize, ySize, c, scene) {
 		floors.push_back(*this);
+		setLocation(x, y);
 	}
 };
 
@@ -76,11 +80,11 @@ public:
 class Player:public GameObject {
 public:
 	int x_direction = 1; //1:오른쪽 -1:왼쪽
-	int speed = 4;
+	int speed = PLAYER_SPEED;
 	float dx = 0, dy = 0;
-	bool isGround=false;
+	bool isGround=false, isJumping=false;
 
-	Player(int x_, int y_, SceneID scene_): GameObject(x_,y_, 32,60, "image/game3/player_right.png", scene_) {
+	Player(int x_, int y_, SceneID scene_): GameObject(x_,y_, 58,1, "image/game3/player_right.png", scene_) {
 	}
 	void setImage(const char* c) {
 		setObjectImage(*this->gameObject, c);
@@ -105,21 +109,28 @@ public:
 	}
 
 	void move() {
-
-
+		if (isJumping||!isGround)
+			dy -= 0.1f;
+	
+		printf("%d\n", x);
 		x += dx;
 		y += dy;
 
+		if (dy < 0 && isJumping) {
+			isJumping = false;
+		}
 		locateObject(*gameObject, scene, x, y);
 	}
 
 	void onGround(bool on) {
 		if (on) {
+			isJumping = false;
 			isGround = true;
 			dy = 0;
 		}
 		else {
-			dy -= 0.1f;
+			isGround = false;
+			isJumping = true;
 		}
 	}
 };
@@ -140,9 +151,17 @@ bool checkCollision(T1 ob1, T2* ob2) {
 
 
 void g3_settingMap() {
-	Floor floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene);
-	/*Floor floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene);
-	Floor floor(600, 100, g3_scene);*/
+	Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene);
+	Floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene);
+	Floor(600, 200, g3_scene);
+	Floor(740, 200, g3_scene);
+	Floor(880, 200, g3_scene);
+	Floor(1020, 200, g3_scene);
+	Floor(1160, 200, g3_scene);
+	Floor(0, 200, g3_scene);
+	Floor(140, 200, g3_scene);
+	Floor(280, 200, g3_scene);
+	Floor(0, 350, g3_scene);
 }
 
 void startGame() {
@@ -204,10 +223,19 @@ void game3_timerCallback(TimerID timer) {
 		g3_player->anim_controll();
 
 		//충돌 검사
-		for (Floor f : floors) {
-			g3_player->onGround(checkCollision(f, g3_player));
-			
-		} 
+		if (!g3_player->isJumping) {
+			for (Floor f : floors) {
+
+				if (checkCollision(f, g3_player)) {
+					g3_player->onGround(true);
+					break;
+				}
+				else {
+					g3_player->onGround(false);
+				}
+
+			}
+		}
 		for (Enemy enemy : enemies) {
 			if (checkCollision(enemy, g3_player)) {
 				gameOver();
@@ -226,9 +254,9 @@ void game3_soundCallback(SoundID sound) {
 void game3_keyboardCallback(KeyCode code, KeyState state) {
 	if (nowgamenum == 3 && g3_isPlaying) {
 		//움직임
-		if (code == KeyCode::KEY_UP_ARROW && g3_player->isGround) {
-			
-			g3_player->dy += 3;
+		if (code == KeyCode::KEY_UP_ARROW &&g3_player->isGround&&state==KeyState::KEY_PRESSED) {
+			g3_player->onGround(false);
+			g3_player->dy += JUMP_POWER;
 		}
 		if (code == KeyCode::KEY_RIGHT_ARROW) {
 			g3_player->x_direction = 1;
@@ -274,6 +302,10 @@ void game3_main() {
 	g3_endgame = createObject("image/end.png", g3_scene2, 550, 450, false, 0.8f);
 	g3_gomapbutton = createObject("image/gomap.png", g3_scene, 300, 200, false, 1.3f);
 
+
+	//맵 세팅
+	g3_settingMap();
+
 	//플레이어
 	g3_player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
 	g3_player->x = INITIAL_PLAYER_X;
@@ -282,8 +314,6 @@ void game3_main() {
 	g3_attack_effect = createObject("image/game3/attack_right1.png", g3_scene,0,0,false,0.3f);
 
 	
-	//맵 세팅
-	g3_settingMap();
 
 	TimerID timer = createTimer(0.01f);
 	startTimer(timer);
