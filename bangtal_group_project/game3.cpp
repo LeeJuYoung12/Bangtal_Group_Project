@@ -69,11 +69,47 @@ public:
 
 class Enemy :public GameObject {
 public:
-	Enemy(int x_, int y_, SceneID scene, const char* c) :GameObject(x_, y_, 155, 40, c, scene) {
-		enemies.push_back(*this);
+
+	class AttackArea {
+	public:
+		int x, y, x_size, y_size;
+		void setInit (int x, int y, int xSize, int ySize) {
+			x = x;
+			y = y;
+			x_size = xSize;
+			y_size = ySize;
+		}
+	};
+	AttackArea attackArea;
+
+	bool isAttack=false;
+	int playerDirection = 1; //1:오른쪽, -1:왼
+	float attack_time = 10.f;
+	ObjectID fire;
+
+	void Update() {
+		if (isAttack) {
+			printf("isAttack");
+			attack_time -= 0.1f;
+			if (attack_time < 0) {
+				attack_time = 10;
+				hideObject(fire);
+				isAttack = false;
+			}
+			else if (attack_time < 5.f)
+				fire = createObject("image/game3/fire.png", scene, x+35+(100*playerDirection), y, true, 1);
+		}
 	}
+
+	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 70, 77, "image/game3/dragon_left.png", scene) { //fix size
+		enemies.push_back(*this);
+		attackArea.setInit(x_ - 100, y_, 270, 77);
+	}
+
 	void attack() {
-		//insert code
+		if(!isAttack)
+			isAttack = true;
+
 	}
 };
 
@@ -112,7 +148,6 @@ public:
 		if (isJumping||!isGround)
 			dy -= 0.1f;
 	
-		printf("%d\n", x);
 		x += dx;
 		y += dy;
 
@@ -143,6 +178,8 @@ bool checkCollision(T1 ob1, T2* ob2) {
 		&& ob2->x + ob2->x_size > ob1.x
 		&& ob1.y + ob1.y_size > ob2->y
 		&& ob2->y + ob2->y_size > ob1.y) {
+
+		printf("x: %d, x: %d, y: %d, y: %d\n", ob1.x, ob2->x, ob1.y, ob2->y);
 		return true;
 	}
 	return false;
@@ -162,6 +199,9 @@ void g3_settingMap() {
 	Floor(140, 200, g3_scene);
 	Floor(280, 200, g3_scene);
 	Floor(0, 350, g3_scene);
+
+
+	Enemy(100, 70, g3_scene);
 }
 
 void startGame() {
@@ -169,7 +209,7 @@ void startGame() {
 }
 
 void gameOver() {
-	g3_isPlaying = false;
+	//g3_isPlaying = false;
 }
 
 
@@ -217,6 +257,7 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 void game3_timerCallback(TimerID timer) {
 	setTimer(timer, 0.01f);
 	startTimer(timer);
+
 	if (g3_isPlaying) {
 		
 		g3_player->move();
@@ -224,22 +265,31 @@ void game3_timerCallback(TimerID timer) {
 
 		//충돌 검사
 		if (!g3_player->isJumping) {
-			for (Floor f : floors) {
+			for (Floor floor : floors) {
 
-				if (checkCollision(f, g3_player)) {
+				if (checkCollision(floor, g3_player)) {
 					g3_player->onGround(true);
 					break;
 				}
 				else {
 					g3_player->onGround(false);
 				}
-
+				
 			}
 		}
 		for (Enemy enemy : enemies) {
 			if (checkCollision(enemy, g3_player)) {
+				printf("gmaeOver\n");
 				gameOver();
 			}
+			
+			//용 공격 가동 범위 체크
+			if (checkCollision(enemy.attackArea, g3_player)) {
+				printf("attackCollision\n");
+				//enemy.attack();
+			}
+
+			enemy.Update();
 		}
 		
 	}
@@ -252,6 +302,7 @@ void game3_soundCallback(SoundID sound) {
 
 //키보드콜백함수
 void game3_keyboardCallback(KeyCode code, KeyState state) {
+	
 	if (nowgamenum == 3 && g3_isPlaying) {
 		//움직임
 		if (code == KeyCode::KEY_UP_ARROW &&g3_player->isGround&&state==KeyState::KEY_PRESSED) {
@@ -261,6 +312,7 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 		if (code == KeyCode::KEY_RIGHT_ARROW) {
 			g3_player->x_direction = 1;
 			setObjectImage(*g3_player->gameObject, "image/game3/player_right.png");
+			
 			g3_player->dx += (state == KeyState::KEY_PRESSED ? g3_player->speed : -g3_player->speed);
 		}
 		if (code == KeyCode::KEY_LEFT_ARROW) {
@@ -284,6 +336,17 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 			}
 
 			showObject(g3_attack_effect);
+		}
+	}
+	else if (nowgamenum == 3 && !g3_isPlaying) {
+		if (code == KeyCode::KEY_RIGHT_ARROW) {
+			g3_player->x_direction = 1;
+
+			g3_player->dx += (state == KeyState::KEY_PRESSED ? g3_player->speed : -g3_player->speed);
+		}
+		if (code == KeyCode::KEY_LEFT_ARROW) {
+			g3_player->x_direction = -1;
+			g3_player->dx -= (state == KeyState::KEY_PRESSED ? g3_player->speed : -g3_player->speed);
 		}
 	}
 }
@@ -312,6 +375,7 @@ void game3_main() {
 	g3_player->y = INITIAL_PLAYER_Y;
 	
 	g3_attack_effect = createObject("image/game3/attack_right1.png", g3_scene,0,0,false,0.3f);
+
 
 	
 

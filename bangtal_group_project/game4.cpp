@@ -659,6 +659,15 @@ void game4_keyboardCallback(KeyCode code, KeyState state) {
 			}
 		}
 	}
+	else if (nowgamenum == 4 && !g4_playing) {
+		if (code == KeyCode::KEY_RIGHT_ARROW) {		// RIGHT
+			g4dx += (state == KeyState::KEY_PRESSED ? g4_speed : -g4_speed);
+		}
+		if (code == KeyCode::KEY_LEFT_ARROW) {		// LEFT
+			g4dx -= (state == KeyState::KEY_PRESSED ? g4_speed : -g4_speed);
+
+		}
+	}
 }
 
 void game4_main() {
