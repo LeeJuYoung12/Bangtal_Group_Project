@@ -2,7 +2,7 @@
 #define g2_ch_width 45*0.7
 #define g2_ch_height 85*0.7
 //1200 700 
-#define JUMP_POWER 120
+#define JUMP_POWER 12
 #define g2_display_height 720
 #define max_speed 25
 
