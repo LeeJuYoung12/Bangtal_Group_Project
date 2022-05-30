@@ -432,8 +432,6 @@ void game4_timerCallback(TimerID timer) {
 				startTimer(g4_jump_t);
 			}
 		}
-		g4_death();
-		g4_clear();
 
 		setTimer(g4_update_t, 0.01f);
 		startTimer(g4_update_t);
