@@ -6,7 +6,7 @@
 #define INITIAL_PLAYER_X 700
 #define INITIAL_PLAYER_Y 80
 #define JUMP_POWER 7
-#define PLAYER_SPEED 2
+#define PLAYER_SPEED 1.7
 
 using namespace std;
 
@@ -19,17 +19,20 @@ bool g3_isPlaying = false, g3_isAttack = false;
 
 float attack_anim_time = 3.f;
 
+int nowMapNum = 0;
+
 SceneID g3_scene,g3_scene2,g3_scene3;
 ObjectID g3_gomapbutton, g3_restartbutton, g3_endingbutton, g3_deathback, g3_clearback, g3_startbutton, g3_endgame;
 ObjectID g3_attack_effect;
+TimerID g3_timer;
 
 class Floor;
 class Enemy;
 class Player;
 class GameObject;
 
-list<Floor*> floors;
-list<Enemy*> enemies;
+list<Floor*> floors[3];
+list<Enemy*> enemies[3];
 Player* g3_player;
 GameObject* fire;
 
@@ -37,6 +40,7 @@ GameObject* fire;
 class GameObject {
 public:
 	int x, y, x_size, y_size;
+	bool state;
 	ObjectID* gameObject;
 	SceneID scene;
 	GameObject(int x_, int y_, int xSize, int ySize, const char* c, SceneID scene_) {
@@ -57,7 +61,16 @@ public:
 		x = x; y = y;
 	}
 	void setImage(const char* c) {
-		setObjectImage(*this->gameObject, c);
+		setObjectImage(*gameObject, c);
+	}
+	void setState(bool b) { //true 면 씬에서 on, false면 off
+		if (b) {
+			showObject(*gameObject);
+		}
+		else {
+			hideObject(*gameObject);
+		}
+		state = b;
 	}
 };
 
@@ -149,12 +162,12 @@ public:
 	bool isAttack=false;
 	int direction = 1; //1:오른쪽, -1:왼
 	float attack_time = 60.f;
-
+	
 	void Update() {
 		if (isAttack) {
 			attack_time -= 0.1f;
 			if (attack_time < 0) {
-				attack_time = 80;
+				attack_time = 60;
 				isAttack = false;
 				hideObject(*fire->gameObject);
 			}
@@ -169,7 +182,7 @@ public:
 		
 	}
 
-	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 70, 77, "image/game3/dragon_left.png", scene) { 	}
+	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 65, 77, "image/game3/dragon_left.png", scene) { 	}
 
 	void attack() {
 		if(!isAttack)
@@ -177,12 +190,12 @@ public:
 
 		if (x > g3_player->x) {
 			direction = -1;
-			this->setImage("image/game3/dragon_left.png");
+			setObjectImage(*gameObject, "image/game3/dragon_left.png");
 			fire->setImage("image/game3/fire_left.png");
 		}
 		else {
 			direction = 1;
-			this->setImage("image/game3/dragon_right.png");
+			setObjectImage(*gameObject, "image/game3/dragon_right.png");
 			fire->setImage("image/game3/fire_right.png");
 		}
 	}
@@ -204,28 +217,47 @@ bool checkCollision(T1* ob1, T2* ob2) {
 }
 
 void g3_settingMap() {
-	floors.push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
-	floors.push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
-	floors.push_back(new Floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
-	floors.push_back(new Floor(600, 200, g3_scene));
-	floors.push_back(new Floor(740, 200, g3_scene));
-	floors.push_back(new Floor(880, 200, g3_scene));
-	floors.push_back(new Floor(1020, 200, g3_scene));
-	floors.push_back(new Floor(1160, 200, g3_scene));
-	floors.push_back(new Floor(0, 200, g3_scene));
-	floors.push_back(new Floor(140, 200, g3_scene));
-	floors.push_back(new Floor(280, 200, g3_scene));
-	floors.push_back(new Floor(0, 350, g3_scene));
+	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	floors[0].push_back(new Floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	floors[0].push_back(new Floor(600, 200, g3_scene));
+	floors[0].push_back(new Floor(740, 200, g3_scene));
+	floors[0].push_back(new Floor(880, 200, g3_scene));
+	floors[0].push_back(new Floor(1020, 200, g3_scene));
+	floors[0].push_back(new Floor(1160, 200, g3_scene));
+	floors[0].push_back(new Floor(0, 200, g3_scene));
+	floors[0].push_back(new Floor(140, 200, g3_scene));
+	floors[0].push_back(new Floor(280, 200, g3_scene));
+	floors[0].push_back(new Floor(0, 350, g3_scene));
 
-	enemies.push_back(new Enemy(200, 70, g3_scene));
+
+	enemies[0].push_back(new Enemy(200, 230, g3_scene));
+	enemies[0].push_back(new Enemy(800,230, g3_scene));
 }
 
 void startGame() {
+	nowMapNum = 0;
+	for (int i = 0; i < 3; i++) {
+		for (Enemy* enemy : enemies[i])
+			enemy->setState(true);
+	}
+
+	
+	setTimer(g3_timer, 0.01f);
+	startTimer(g3_timer);
+	g3_settingMap();
 	g3_isPlaying = true;
+
+	g3_player->setLocation(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
+	locateObject(g3_attack_effect, g3_scene, 0, 0);
+	
+	fire->setLocation(0, 0, g3_scene);
+	
 }
 
 void gameOver() {
-	//g3_isPlaying = false;
+	g3_isPlaying = false;
+	stopTimer(g3_timer);
 }
 
 // 마우스콜백함수
@@ -238,12 +270,14 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		enterScene(mapscene);
 		//stopSound(g3_mapbgm);
 		playSound(introbgm);
+		g3_isPlaying = false;
 	}
 	if (object == g3_restartbutton) {
 		hideObject(g3_deathback);
 		hideObject(g3_gomapbutton);
 		hideObject(g3_restartbutton);
 		showObject(g3_startbutton);
+		startGame();
 	}
 
 	if (object == g3_startbutton) {
@@ -252,6 +286,7 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		hideObject(g3_deathback);
 		hideObject(g3_gomapbutton);
 		hideObject(g3_restartbutton);
+		startGame();
 	}
 
 	if (object == g3_endingbutton) {
@@ -270,8 +305,8 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
 //타이머콜백함수
 void game3_timerCallback(TimerID timer) {
-	setTimer(timer, 0.01f);
-	startTimer(timer);
+	setTimer(g3_timer, 0.01f);
+	startTimer(g3_timer);
 
 	if (g3_isPlaying) {
 		
@@ -280,7 +315,7 @@ void game3_timerCallback(TimerID timer) {
 
 		//충돌 검사
 		if (!g3_player->isJumping) {
-			for (Floor* floor : floors) {
+			for (Floor* floor : floors[nowMapNum]) {
 
 				if (checkCollision(floor, g3_player)) {
 					g3_player->onGround(true);
@@ -292,22 +327,31 @@ void game3_timerCallback(TimerID timer) {
 				
 			}
 		}
-		for (Enemy* enemy : enemies) {
-			if (checkCollision(enemy, g3_player)) {
-				printf("gmaeOver\n");
-				gameOver();
+		bool dragonExist = false;
+
+		for (Enemy* enemy : enemies[nowMapNum]) {
+			if (enemy->state) {
+				dragonExist = true;
+				if (checkCollision(enemy, g3_player)) {
+					printf("gmaeOver\n");
+					gameOver();
+				}
+
+				AttackArea* a = &AttackArea(enemy->x - 100, enemy->y, 270, 77);
+
+				//용 공격 가동 범위 체크
+				if (checkCollision((a), g3_player)) {
+
+					enemy->attack();
+				}
 			}
-
-			AttackArea* a= &AttackArea(enemy->x - 100, enemy->y, 270, 77);
-
-			//용 공격 가동 범위 체크
-			if (checkCollision((a), g3_player)) {
-
-				enemy->attack();
-			}
-
-
 			enemy->Update();
+		}
+		if (dragonExist == false) {
+			nowgamenum++;
+			if (nowgamenum == 3) {
+				//게임 클리어 표시
+			}
 		}
 		
 	}
@@ -397,8 +441,8 @@ void game3_main() {
 		fire = new GameObject(0, 0, 120, 90, "image/game3/fire_right.png", g3_scene);
 		hideObject(*fire->gameObject);
 
-		TimerID timer = createTimer(0.01f);
-		startTimer(timer);
+		g3_timer = createTimer(0.01f);
+		startTimer(g3_timer);
 
 	
 }
