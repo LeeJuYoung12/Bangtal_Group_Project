@@ -21,7 +21,7 @@ float attack_anim_time = 3.f;
 
 int nowMapNum = 0;
 
-SceneID g3_scene, g3_scene2, g3_scene3;
+SceneID g3_scene,g3_scene2,g3_scene3;
 ObjectID g3_gomapbutton, g3_restartbutton, g3_endingbutton, g3_deathback, g3_clearback, g3_startbutton, g3_endgame;
 ObjectID g3_attack_effect;
 TimerID g3_timer;
@@ -143,20 +143,20 @@ public:
 	}
 };
 
-class Floor : public GameObject {
+class Floor : public GameObject{
 public:
-	Floor(int x_, int y_, SceneID scene) :GameObject(x_, y_, 120, 35, "image/game3/floor2.png", scene) {
+	Floor(int x_, int y_, SceneID scene) :GameObject(x_, y_, 120, 35, "image/game3/floor2.png", scene){
 		setLocation(x, y);
 	}
 	Floor(int x_, int y_, int xSize, int ySize, const char* c, SceneID scene) :GameObject(x_, y_, xSize, ySize, c, scene) {
 		setLocation(x, y);
 	}
-
+	
 };
 
 class AttackArea {
 public:
-	int x = 0, y = 0, x_size = 0, y_size = 0;
+	int x=0, y=0, x_size=0, y_size=0;
 	AttackArea(int x_, int y_, int xSize, int ySize) {
 		x = x_;
 		y = y_;
@@ -182,12 +182,12 @@ void gameOver() {
 
 class Enemy :public GameObject {
 public:
-	bool isAttack = false;
-	int direction = 1, hp = 2; //1:오른쪽, -1:왼
+	bool isAttack=false;
+	int direction = 1, hp=2; //1:오른쪽, -1:왼
 	float attack_time = 60.f;
-
+	
 	void Update() {
-		if (isAttack && state) {
+		if (isAttack&&state) {
 			attack_time -= 0.1f;
 			if (attack_time < 0) {
 				attack_time = 60;
@@ -201,18 +201,18 @@ public:
 					gameOver();
 				}
 			}
-
+			
 		}
 	}
 
 	void move() {
-
+		
 	}
 
 	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 65, 77, "image/game3/dragon_right.png", scene) {}
 
 	void attack() {
-		if (!isAttack)
+		if(!isAttack)
 			isAttack = true;
 
 	}
@@ -237,7 +237,7 @@ void g3_settingMap() {
 
 
 	enemies[0].push_back(new Enemy(700, 230, g3_scene));
-	enemies[0].push_back(new Enemy(800, 230, g3_scene));
+	enemies[0].push_back(new Enemy(800,230, g3_scene));
 }
 
 void startGame() {
@@ -249,7 +249,7 @@ void startGame() {
 			enemy->attack_time = 60;
 		}
 	}
-
+	
 	setTimer(g3_timer, 0.01f);
 	startTimer(g3_timer);
 	g3_isPlaying = true;
@@ -259,7 +259,7 @@ void startGame() {
 
 	hideObject(*fire->gameObject);
 	fire->setLocation(0, 0, g3_scene);
-
+	
 }
 
 
@@ -313,7 +313,7 @@ void game3_timerCallback(TimerID timer) {
 	startTimer(g3_timer);
 
 	if (g3_isPlaying) {
-
+		
 		g3_player->move();
 		g3_player->anim_controll();
 
@@ -328,7 +328,7 @@ void game3_timerCallback(TimerID timer) {
 				else {
 					g3_player->onGround(false);
 				}
-
+				
 			}
 		}
 		bool dragonExist = false;
@@ -340,8 +340,8 @@ void game3_timerCallback(TimerID timer) {
 					printf("gameOver\n");
 					gameOver();
 				}
-				AttackArea foo(enemy->x - 100, enemy->y, 270, 77);
-				AttackArea* a = &foo;
+
+				AttackArea* a = &AttackArea(enemy->x - 100, enemy->y, 270, 77);
 
 				//용 공격 가동 범위 체크
 				if (checkCollision((a), g3_player)) {
@@ -372,10 +372,10 @@ void game3_timerCallback(TimerID timer) {
 			else {
 				nowMapNum++;
 			}
-			printf("%d", nowMapNum);
-
+			printf("%d",nowMapNum);
+			
 		}
-
+		
 	}
 }
 
@@ -386,17 +386,17 @@ void game3_soundCallback(SoundID sound) {
 
 //키보드콜백함수
 void game3_keyboardCallback(KeyCode code, KeyState state) {
-
+	
 	if (nowgamenum == 3 && g3_isPlaying) {
 		//움직임
-		if (code == KeyCode::KEY_UP_ARROW && g3_player->isGround && state == KeyState::KEY_PRESSED) {
+		if (code == KeyCode::KEY_UP_ARROW &&g3_player->isGround&&state==KeyState::KEY_PRESSED) {
 			g3_player->onGround(false);
 			g3_player->dy += JUMP_POWER;
 		}
 		if (code == KeyCode::KEY_RIGHT_ARROW) {
 			g3_player->x_direction = 1;
 			setObjectImage(*g3_player->gameObject, "image/game3/player_right.png");
-
+			
 			g3_player->dx += (state == KeyState::KEY_PRESSED ? g3_player->speed : -g3_player->speed);
 		}
 		if (code == KeyCode::KEY_LEFT_ARROW) {
@@ -418,8 +418,8 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 				setObjectImage(g3_attack_effect, "image/game3/attack_left1.png");
 			}
 			locateObject(g3_attack_effect, g3_scene, g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y);
-			AttackArea foo(g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y, 20, 50);
-			AttackArea* a = &foo;
+
+			AttackArea* a = &AttackArea(g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y,20,50);
 
 			for (Enemy* enemy : enemies[nowMapNum]) {
 				if (checkCollision(enemy, a)) {
@@ -448,35 +448,35 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 }
 
 void game3_main() {
-	g3_scene = createScene("game3", "image/game3/background.png");
-	g3_scene2 = createScene("game3", "image/game3/background.png");
-	g3_scene3 = createScene("game3", "image/game3/background.png");
+		g3_scene = createScene("game3", "image/game3/background.png");
+		g3_scene2 = createScene("game3", "image/game3/background.png");
+		g3_scene3 = createScene("game3", "image/game3/background.png");
 
 
-	g3_settingMap();
+		g3_settingMap();
 
-	//UI button
-	g3_clearback = createObject("image/clear.png", g3_scene, 270, 300, false, 1.5f);
-	g3_deathback = createObject("image/gameover.png", g3_scene, 270, 300, false, 1.5f);
-	g3_restartbutton = createObject("image/restart.png", g3_scene, 700, 200, false, 1.3f);
-	g3_startbutton = createObject("image/start.png", g3_scene, 450, 300, true, 0.8f);
-	g3_endingbutton = createObject("image/ending.png", g3_scene, 500, 100, false, 1.3f);
-	g3_endgame = createObject("image/end.png", g3_scene2, 550, 450, false, 0.8f);
-	g3_gomapbutton = createObject("image/gomap.png", g3_scene, 300, 200, false, 1.3f);
-
-
-	//플레이어
-	g3_player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
-	g3_player->x = INITIAL_PLAYER_X;
-	g3_player->y = INITIAL_PLAYER_Y;
-
-	g3_attack_effect = createObject("image/game3/attack_right1.png", g3_scene, 0, 0, false, 0.3f);
-
-	fire = new GameObject(0, 0, 120, 90, "image/game3/fire_right.png", g3_scene);
-	hideObject(*fire->gameObject);
-
-	g3_timer = createTimer(0.01f);
-	startTimer(g3_timer);
+		//UI button
+		g3_clearback = createObject("image/clear.png", g3_scene, 270, 300, false, 1.5f);
+		g3_deathback = createObject("image/gameover.png", g3_scene, 270, 300, false, 1.5f);
+		g3_restartbutton = createObject("image/restart.png", g3_scene, 700, 200, false, 1.3f);
+		g3_startbutton = createObject("image/start.png", g3_scene, 450, 300, true, 0.8f);
+		g3_endingbutton = createObject("image/ending.png", g3_scene, 500, 100, false, 1.3f);
+		g3_endgame = createObject("image/end.png", g3_scene2, 550, 450, false, 0.8f);
+		g3_gomapbutton = createObject("image/gomap.png", g3_scene, 300, 200, false, 1.3f);
 
 
+		//플레이어
+		g3_player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
+		g3_player->x = INITIAL_PLAYER_X;
+		g3_player->y = INITIAL_PLAYER_Y;
+		
+		g3_attack_effect = createObject("image/game3/attack_right1.png", g3_scene, 0, 0, false, 0.3f);
+
+		fire = new GameObject(0, 0, 120, 90, "image/game3/fire_right.png", g3_scene);
+		hideObject(*fire->gameObject);
+
+		g3_timer = createTimer(0.01f);
+		startTimer(g3_timer);
+
+	
 }
