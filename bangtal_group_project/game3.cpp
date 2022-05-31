@@ -36,6 +36,19 @@ list<Enemy*> enemies[3];
 Player* g3_player;
 GameObject* fire;
 
+template <class T1, class T2>
+//충돌체크
+bool checkCollision(T1* ob1, T2* ob2) {
+	if (ob1->x + ob1->x_size > ob2->x
+		&& ob2->x + ob2->x_size > ob1->x
+		&& ob1->y + ob1->y_size > ob2->y
+		&& ob2->y + ob2->y_size > ob1->y) {
+
+		return true;
+	}
+	return false;
+}
+
 
 class GameObject {
 public:
@@ -58,7 +71,7 @@ public:
 	}
 	void setLocation(int x, int y, SceneID scene) {
 		locateObject(*gameObject, scene, x, y);
-		x = x; y = y;
+		this->x = x; this->y = y;
 	}
 	void setImage(const char* c) {
 		setObjectImage(*gameObject, c);
@@ -157,6 +170,15 @@ public:
 	}
 };
 
+void gameOver() {
+	g3_isPlaying = false;
+	stopTimer(g3_timer);
+
+	showObject(g3_deathback);
+	showObject(g3_gomapbutton);
+	showObject(g3_restartbutton);
+}
+
 class Enemy :public GameObject {
 public:
 	bool isAttack=false;
@@ -174,6 +196,10 @@ public:
 			else if (attack_time < 40.f) {
 				showObject(*fire->gameObject);
 				fire->setLocation(x - 25 + (direction * 100), y, scene);
+			}
+			if (checkCollision(fire, g3_player)) {
+				gameOver();
+				printf("asdfsadf");
 			}
 		}
 	}
@@ -203,18 +229,6 @@ public:
 
 
 
-template <class T1, class T2>
-//충돌체크
-bool checkCollision(T1* ob1, T2* ob2) {
-	if (ob1->x + ob1->x_size > ob2->x
-		&& ob2->x + ob2->x_size > ob1->x
-		&& ob1->y + ob1->y_size > ob2->y
-		&& ob2->y + ob2->y_size > ob1->y) {
-		
-		return true;
-	}
-	return false;
-}
 
 void g3_settingMap() {
 	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
@@ -238,10 +252,12 @@ void g3_settingMap() {
 void startGame() {
 	nowMapNum = 0;
 	for (int i = 0; i < 3; i++) {
-		for (Enemy* enemy : enemies[i])
+		for (Enemy* enemy : enemies[i]) {
 			enemy->setState(true);
+			enemy->isAttack = false;
+			enemy->attack_time = 60;
+		}
 	}
-
 	
 	setTimer(g3_timer, 0.01f);
 	startTimer(g3_timer);
@@ -250,15 +266,13 @@ void startGame() {
 
 	g3_player->setLocation(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
 	locateObject(g3_attack_effect, g3_scene, 0, 0);
-	
+
+	hideObject(*fire->gameObject);
 	fire->setLocation(0, 0, g3_scene);
 	
 }
 
-void gameOver() {
-	g3_isPlaying = false;
-	stopTimer(g3_timer);
-}
+
 
 // 마우스콜백함수
 void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
@@ -418,6 +432,9 @@ void game3_main() {
 		g3_scene2 = createScene("game3", "image/game3/background.png");
 		g3_scene3 = createScene("game3", "image/game3/background.png");
 
+		//맵 세팅
+		g3_settingMap();
+
 		//UI button
 		g3_clearback = createObject("image/clear.png", g3_scene, 270, 300, false, 1.5f);
 		g3_deathback = createObject("image/gameover.png", g3_scene, 270, 300, false, 1.5f);
@@ -427,9 +444,6 @@ void game3_main() {
 		g3_endgame = createObject("image/end.png", g3_scene2, 550, 450, false, 0.8f);
 		g3_gomapbutton = createObject("image/gomap.png", g3_scene, 300, 200, false, 1.3f);
 
-
-		//맵 세팅
-		g3_settingMap();
 
 		//플레이어
 		g3_player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
