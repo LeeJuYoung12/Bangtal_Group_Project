@@ -184,7 +184,7 @@ class Enemy :public GameObject {
 public:
 	bool isAttack=false;
 	int direction = 1, hp=2; //1:오른쪽, -1:왼
-	float attack_time = 60.f;
+	float attack_time =60.f;
 	
 	void Update() {
 		if (isAttack&&state) {
@@ -194,7 +194,7 @@ public:
 				isAttack = false;
 				hideObject(*fire->gameObject);
 			}
-			else if (attack_time < 40.f) {
+			else if (attack_time < 30.f) {
 				showObject(*fire->gameObject);
 				fire->setLocation(x - 25 + (direction * 100), y, scene);
 				if (checkCollision(fire, g3_player)) {
@@ -222,8 +222,7 @@ public:
 
 
 void g3_settingMap() {
-	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
-	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	/*floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
 	floors[0].push_back(new Floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
 	floors[0].push_back(new Floor(600, 200, g3_scene));
 	floors[0].push_back(new Floor(740, 200, g3_scene));
@@ -233,11 +232,33 @@ void g3_settingMap() {
 	floors[0].push_back(new Floor(0, 200, g3_scene));
 	floors[0].push_back(new Floor(140, 200, g3_scene));
 	floors[0].push_back(new Floor(280, 200, g3_scene));
-	floors[0].push_back(new Floor(0, 350, g3_scene));
+	floors[0].push_back(new Floor(0, 370, g3_scene));
+	floors[0].push_back(new Floor(140, 370, g3_scene));
+	floors[0].push_back(new Floor(700, 370, g3_scene));
+	floors[0].push_back(new Floor(1100, 370, g3_scene));
+	floors[0].push_back(new Floor(170, 500, g3_scene));
+	floors[0].push_back(new Floor(500, 500, g3_scene));
+	floors[0].push_back(new Floor(800, 500, g3_scene));
+
+	enemies[0].push_back(new Enemy(100, 233, g3_scene));
+	enemies[0].push_back(new Enemy(800,233, g3_scene));
+	enemies[0].push_back(new Enemy(500,533, g3_scene));
+	enemies[0].push_back(new Enemy(200,533, g3_scene));*/
 
 
-	enemies[0].push_back(new Enemy(700, 230, g3_scene));
-	enemies[0].push_back(new Enemy(800,230, g3_scene));
+	floors[0].push_back(new Floor(-20, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	floors[0].push_back(new Floor(980, 40, 1030, 33, "image/game3/floor1.png", g3_scene));
+	floors[0].push_back(new Floor(140, 230, g3_scene));
+	floors[0].push_back(new Floor(250, 430, g3_scene));
+	floors[0].push_back(new Floor(390, 430, g3_scene));
+	floors[0].push_back(new Floor(530, 430, g3_scene));
+	floors[0].push_back(new Floor(700, 260, g3_scene));
+	floors[0].push_back(new Floor(700, 600, g3_scene));
+
+	enemies[0].push_back(new Enemy(300, 463, g3_scene));
+	enemies[0].push_back(new Enemy(500, 463, g3_scene));
+	enemies[0].push_back(new Enemy(700, 293, g3_scene));
+	enemies[0].push_back(new Enemy(700, 633, g3_scene));
 }
 
 void startGame() {
@@ -340,8 +361,8 @@ void game3_timerCallback(TimerID timer) {
 					printf("gameOver\n");
 					gameOver();
 				}
-
-				AttackArea* a = &AttackArea(enemy->x - 100, enemy->y, 270, 77);
+				AttackArea a_(enemy->x - 100, enemy->y, 270, 77);
+				AttackArea* a = &a_;
 
 				//용 공격 가동 범위 체크
 				if (checkCollision((a), g3_player)) {
@@ -419,8 +440,9 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 			}
 			locateObject(g3_attack_effect, g3_scene, g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y);
 
-			AttackArea* a = &AttackArea(g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y,20,50);
+			AttackArea a_(g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y, 20, 50);
 
+			AttackArea* a = &a_;
 			for (Enemy* enemy : enemies[nowMapNum]) {
 				if (checkCollision(enemy, a)) {
 					enemy->hp -= 1;
