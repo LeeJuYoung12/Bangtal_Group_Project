@@ -183,13 +183,13 @@ void g2_settingMap() {
 	makeAndPush(g2_thorn, g2_scene3, 605, 466, 69, 34, "thorn");
 
 
-	makeAndPush(g2_bigStool, g2_scene3, 855, 530, 155, 30, "floor");
-	makeAndPush(g2_smallStool, g2_scene3, 990, 530, 72, 30, "floor");
+	makeAndPush(g2_bigStool, g2_scene3, 715, 530, 155, 30, "floor");
+	makeAndPush(g2_smallStool, g2_scene3, 855, 530, 72, 30, "floor");
 
 	
 	
 
-	makeAndPush("image/game2/portal.png", g2_scene3, 950, 560, 72, 30, "potal");
+	makeAndPush("image/game2/portal.png", g2_scene3, 815, 560, 72, 30, "potal");
 	/*
 
 	makeAndPush(g2_smallStool, g2_scene, 200, 180, 71, 30, "floor");
@@ -500,7 +500,7 @@ void game2_timerCallback(TimerID timer) {
 	}
 
 	if (timer == g2_update_t) {
-		if ((940 < g2cx && g2cx < 1000) && g2cy == 2000) {
+		if ((820 < g2cx && g2cx < 900) && g2cy == 2000) {
 			g2_clear();
 			setTimer(g2_move_t, 10000);
 			startTimer(g2_move_t);
