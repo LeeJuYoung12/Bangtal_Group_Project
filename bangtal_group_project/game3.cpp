@@ -63,7 +63,7 @@ public:
 		y_size = ySize;
 		scene = scene_;
 		gameObject = new ObjectID;
-		*gameObject = createObject(c, scene, x_,y_,true, 1);
+		*gameObject = createObject(c, scene, x, y, true, 1);
 	}
 	void setLocation(int x, int y) {
 		locateObject(*gameObject, scene, x, y);
@@ -96,6 +96,7 @@ public:
 
 	Player(int x_, int y_, SceneID scene_) : GameObject(x_, y_, 58, 1, "image/game3/player_right.png", scene_) {
 	}
+
 
 
 	void anim_controll() {
@@ -182,11 +183,11 @@ void gameOver() {
 class Enemy :public GameObject {
 public:
 	bool isAttack=false;
-	int direction = 1; //1:오른쪽, -1:왼
+	int direction = 1, hp=2; //1:오른쪽, -1:왼
 	float attack_time = 60.f;
 	
 	void Update() {
-		if (isAttack) {
+		if (isAttack&&state) {
 			attack_time -= 0.1f;
 			if (attack_time < 0) {
 				attack_time = 60;
@@ -196,11 +197,11 @@ public:
 			else if (attack_time < 40.f) {
 				showObject(*fire->gameObject);
 				fire->setLocation(x - 25 + (direction * 100), y, scene);
+				if (checkCollision(fire, g3_player)) {
+					gameOver();
+				}
 			}
-			if (checkCollision(fire, g3_player)) {
-				gameOver();
-				printf("asdfsadf");
-			}
+			
 		}
 	}
 
@@ -208,22 +209,12 @@ public:
 		
 	}
 
-	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 65, 77, "image/game3/dragon_left.png", scene) { 	}
+	Enemy(int x_, int y_, SceneID scene) :GameObject(x_, y_, 65, 77, "image/game3/dragon_right.png", scene) {}
 
 	void attack() {
 		if(!isAttack)
 			isAttack = true;
 
-		if (x > g3_player->x) {
-			direction = -1;
-			setObjectImage(*gameObject, "image/game3/dragon_left.png");
-			fire->setImage("image/game3/fire_left.png");
-		}
-		else {
-			direction = 1;
-			setObjectImage(*gameObject, "image/game3/dragon_right.png");
-			fire->setImage("image/game3/fire_right.png");
-		}
 	}
 };
 
@@ -245,7 +236,7 @@ void g3_settingMap() {
 	floors[0].push_back(new Floor(0, 350, g3_scene));
 
 
-	enemies[0].push_back(new Enemy(200, 230, g3_scene));
+	enemies[0].push_back(new Enemy(700, 230, g3_scene));
 	enemies[0].push_back(new Enemy(800,230, g3_scene));
 }
 
@@ -261,7 +252,6 @@ void startGame() {
 	
 	setTimer(g3_timer, 0.01f);
 	startTimer(g3_timer);
-	g3_settingMap();
 	g3_isPlaying = true;
 
 	g3_player->setLocation(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
@@ -290,7 +280,7 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		hideObject(g3_deathback);
 		hideObject(g3_gomapbutton);
 		hideObject(g3_restartbutton);
-		showObject(g3_startbutton);
+		//showObject(g3_startbutton);
 		startGame();
 	}
 
@@ -347,7 +337,7 @@ void game3_timerCallback(TimerID timer) {
 			if (enemy->state) {
 				dragonExist = true;
 				if (checkCollision(enemy, g3_player)) {
-					printf("gmaeOver\n");
+					printf("gameOver\n");
 					gameOver();
 				}
 
@@ -357,15 +347,33 @@ void game3_timerCallback(TimerID timer) {
 				if (checkCollision((a), g3_player)) {
 
 					enemy->attack();
+
+					if (enemy->x > g3_player->x) {
+						enemy->direction = -1;
+						enemy->setImage("image/game3/dragon_left.png");
+						setObjectImage(*enemy->gameObject, "image/game3/dragon_left.png");
+
+						fire->setImage("image/game3/fire_left.png");
+					}
+					else {
+						enemy->direction = 1;
+						setObjectImage(*enemy->gameObject, "image/game3/dragon_right.png");
+						fire->setImage("image/game3/fire_right.png");
+					}
+					break;
 				}
 			}
 			enemy->Update();
 		}
 		if (dragonExist == false) {
-			nowgamenum++;
-			if (nowgamenum == 3) {
+			if (nowMapNum == 2) {
 				//게임 클리어 표시
 			}
+			else {
+				nowMapNum++;
+			}
+			printf("%d",nowMapNum);
+			
 		}
 		
 	}
@@ -403,12 +411,24 @@ void game3_keyboardCallback(KeyCode code, KeyState state) {
 			if (g3_player->x_direction == 1) {
 				g3_player->setImage("image/game3/player_attack_right.png");
 				setObjectImage(g3_attack_effect, "image/game3/attack_right1.png");
-				locateObject(g3_attack_effect, g3_scene, g3_player->x + 70, g3_player->y);
+
 			}
 			else {
 				g3_player->setImage("image/game3/player_attack_left.png");
 				setObjectImage(g3_attack_effect, "image/game3/attack_left1.png");
-				locateObject(g3_attack_effect, g3_scene, g3_player->x - 90, g3_player->y);
+			}
+			locateObject(g3_attack_effect, g3_scene, g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y);
+
+			AttackArea* a = &AttackArea(g3_player->x + 25 + (g3_player->x_direction * 90), g3_player->y,20,50);
+
+			for (Enemy* enemy : enemies[nowMapNum]) {
+				if (checkCollision(enemy, a)) {
+					enemy->hp -= 1;
+					if (enemy->hp <= 0) {
+						enemy->setState(false);
+					}
+					printf("%d", enemy->hp);
+				}
 			}
 
 			showObject(g3_attack_effect);
@@ -432,7 +452,7 @@ void game3_main() {
 		g3_scene2 = createScene("game3", "image/game3/background.png");
 		g3_scene3 = createScene("game3", "image/game3/background.png");
 
-		//맵 세팅
+
 		g3_settingMap();
 
 		//UI button
@@ -449,7 +469,7 @@ void game3_main() {
 		g3_player = new Player(INITIAL_PLAYER_X, INITIAL_PLAYER_Y, g3_scene);
 		g3_player->x = INITIAL_PLAYER_X;
 		g3_player->y = INITIAL_PLAYER_Y;
-
+		
 		g3_attack_effect = createObject("image/game3/attack_right1.png", g3_scene, 0, 0, false, 0.3f);
 
 		fire = new GameObject(0, 0, 120, 90, "image/game3/fire_right.png", g3_scene);
