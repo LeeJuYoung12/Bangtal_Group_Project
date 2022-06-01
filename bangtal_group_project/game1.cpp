@@ -1005,25 +1005,29 @@ void g1_attack() {
 	}
 }
 
+
 void g1_boxdelete2() {
+
 	for (int i = 0; i < 8; i++) {
-		if (((g1_attackeffectx + 220 * 0.4) > g1_box_xs2[i]) && ((g1_attackeffectx + 220 * 0.4) < (g1_box_xs2[i] + 50)) && ((g1_attackeffecty + 130 * 0.4) > g1_box_ys2[i]) && ((g1_attackeffecty + 130 * 0.4) < (g1_box_xs2[i] + 50))) {
+		if (((g1_attackeffectx + 200 * 0.4) > g1_box_xs2[i]) && ((g1_attackeffectx + 200 * 0.4) < (g1_box_xs2[i] + 50)) && ((g1_attackeffecty + 110 * 0.4) > g1_box_ys2[i]) && ((g1_attackeffecty + 110 * 0.4) < (g1_box_xs2[i] + 50))) {
 			g1_box_xs2[i] = 1300, g1_box_ys2[i] = 800;
 			playSound(g1_boxsound);
 			locateObject(g1_boxs2[i], g1_scene, g1_box_xs2[i], g1_box_ys2[i]);
 		}
 	}
+
 }
 
 void g1_boxdelete3()
 {
 	for (int i = 0; i < 6; i++) {
-		if (((g1_attackeffectx + 220 * 0.4) > g1_box_xs3[i]) && ((g1_attackeffectx + 220 * 0.4) < (g1_box_xs3[i] + 50)) && ((g1_attackeffecty + 130 * 0.4) > g1_box_ys3[i]) && ((g1_attackeffecty + 130 * 0.4) < (g1_box_xs3[i] + 50))) {
+		if (((g1_attackeffectx + 200 * 0.4) > g1_box_xs3[i]) && ((g1_attackeffectx + 200 * 0.4) < (g1_box_xs3[i] + 50)) && ((g1_attackeffecty + 110 * 0.4) > g1_box_ys3[i]) && ((g1_attackeffecty + 110 * 0.4) < (g1_box_xs3[i] + 50))) {
 			g1_box_xs3[i] = 1300, g1_box_ys3[i] = 800;
 			playSound(g1_boxsound);
 			locateObject(g1_boxs3[i], g1_scene, g1_box_xs3[i], g1_box_ys3[i]);
 		}
 	}
+
 }
 
 void g1_clear() {
@@ -1100,16 +1104,10 @@ void g1_clear() {
 void g1_death_s1() {
 	int i, j;
 	for (i = 0; i < 15; i++) {
-		if ((((g1cx + 30 * 0.7 > g1_skeleton1_x[i]) && (g1cx + 30 * 0.7 < g1_skeleton1_x[i] + 50)) || ((g1cx + 60 * 0.7 > g1_skeleton1_x[i]) && (g1cx + 60 * 0.7 < g1_skeleton1_x[i] + 50))) && ((((g1cy + 5 * 0.7 > g1_skeleton1_y[i]) && (g1cy + 5 * 0.7 < g1_skeleton1_y[i] + 50))) || ((g1cy + 95 * 0.7 > g1_skeleton1_y[i]) && (g1cy + 95 * 0.7 < g1_skeleton1_y[i] + 50)))) {
-			showObject(g1_deathback);
-			showObject(g1_gomapbutton);
-			showObject(g1_restartbutton);
-
-			stopTimer(g1_move_t);
-			stopTimer(g1_moveskeleton_t);
-			stopTimer(g1_update_t);
-			stopTimer(g1_effectmove_t);
-		}
+		g1_exam(g1_skeleton1_x[i] + 10, g1_skeleton1_y[i] + 6);
+		g1_exam(g1_skeleton1_x[i] + 40, g1_skeleton1_y[i] + 6);
+		g1_exam(g1_skeleton1_x[i] + 10, g1_skeleton1_y[i] + 50);
+		g1_exam(g1_skeleton1_x[i] + 40, g1_skeleton1_y[i] + 50);
 	}
 	if (g1cx <= 260)
 	{
@@ -1162,23 +1160,17 @@ void g1_death_s2()
 {
 	int i, j;
 	for (i = 0; i < 11; i++) {
-		if ((((g1cx + 30 * 0.7 > g1_skeleton2_x[i]) && (g1cx + 30 * 0.7 < g1_skeleton2_x[i] + 50)) || ((g1cx + 60 * 0.7 > g1_skeleton2_x[i]) && (g1cx + 60 * 0.7 < g1_skeleton2_x[i] + 50))) && ((((g1cy + 5 * 0.7 > g1_skeleton2_y[i]) && (g1cy + 5 * 0.7 < g1_skeleton2_y[i] + 50))) || ((g1cy + 95 * 0.7 > g1_skeleton2_y[i]) && (g1cy + 95 * 0.7 < g1_skeleton2_y[i] + 50)))) {
-			showObject(g1_deathback);
-			showObject(g1_gomapbutton);
-			showObject(g1_restartbutton);
-
-			stopTimer(g1_move_t);
-			stopTimer(g1_moveskeleton_t);
-			stopTimer(g1_update_t);
-			stopTimer(g1_effectmove_t);
-		}
+		g1_exam(g1_skeleton2_x[i] + 10, g1_skeleton2_y[i] + 6);
+		g1_exam(g1_skeleton2_x[i] + 40, g1_skeleton2_y[i] + 6);
+		g1_exam(g1_skeleton2_x[i] + 10, g1_skeleton2_y[i] + 50);
+		g1_exam(g1_skeleton2_x[i] + 40, g1_skeleton2_y[i] + 50);
 	}
 	for (i = 0; i < 3; i++)
 	{
 		g1_exam(200, 175 + i * 25);
 		g1_exam(225, 175 + i * 25);
-		g1_exam(300, i * 25);
-		g1_exam(325, i * 25);
+		g1_exam(300, i * 25 + 15);
+		g1_exam(325, i * 25 + 15);
 	}
 	for (i = 0; i < 4; i++)
 	{
@@ -1221,28 +1213,16 @@ void g1_death_s3()
 		}
 	}
 	for (i = 0; i < 4; i++) {
-		if ((((g1cx + 30 * 0.7 > g1_skeleton3_x[i]) && (g1cx + 30 * 0.7 < g1_skeleton3_x[i] + 50)) || ((g1cx + 60 * 0.7 > g1_skeleton3_x[i]) && (g1cx + 60 * 0.7 < g1_skeleton3_x[i] + 50))) && ((((g1cy + 5 * 0.7 > g1_skeleton3_y[i]) && (g1cy + 5 * 0.7 < g1_skeleton3_y[i] + 50))) || ((g1cy + 95 * 0.7 > g1_skeleton3_y[i]) && (g1cy + 95 * 0.7 < g1_skeleton3_y[i] + 50)))) {
-			showObject(g1_deathback);
-			showObject(g1_gomapbutton);
-			showObject(g1_restartbutton);
-
-			stopTimer(g1_move_t);
-			stopTimer(g1_moveskeleton_t);
-			stopTimer(g1_update_t);
-			stopTimer(g1_effectmove_t);
-		}
+		g1_exam(g1_skeleton3_x[i] + 10, g1_skeleton3_y[i] + 6);
+		g1_exam(g1_skeleton3_x[i] + 40, g1_skeleton3_y[i] + 6);
+		g1_exam(g1_skeleton3_x[i] + 10, g1_skeleton3_y[i] + 50);
+		g1_exam(g1_skeleton3_x[i] + 40, g1_skeleton3_y[i] + 50);
 	}
 	for (i = 4; i < 32; i++) {
-		if ((((g1cx + 30 * 0.7 > g1_skeleton3_x[i]) && (g1cx + 30 * 0.7 < g1_skeleton3_x[i] + 50)) || ((g1cx + 60 * 0.7 > g1_skeleton3_x[i]) && (g1cx + 60 * 0.7 < g1_skeleton3_x[i] + 50))) && ((((g1cy + 5 * 0.7 > g1_skeleton3_y[i]) && (g1cy + 5 * 0.7 < g1_skeleton3_y[i] + 50))) || ((g1cy + 95 * 0.7 > g1_skeleton3_y[i]) && (g1cy + 95 * 0.7 < g1_skeleton3_y[i] + 50)))) {
-			showObject(g1_deathback);
-			showObject(g1_gomapbutton);
-			showObject(g1_restartbutton);
-
-			stopTimer(g1_move_t);
-			stopTimer(g1_moveskeleton_t);
-			stopTimer(g1_update_t);
-			stopTimer(g1_effectmove_t);
-		}
+		g1_exam(g1_skeleton3_x[i] + 10, g1_skeleton3_y[i] + 6);
+		g1_exam(g1_skeleton3_x[i] + 40, g1_skeleton3_y[i] + 6);
+		g1_exam(g1_skeleton3_x[i] + 10, g1_skeleton3_y[i] + 50);
+		g1_exam(g1_skeleton3_x[i] + 40, g1_skeleton3_y[i] + 50);
 	}
 }
 
@@ -1536,7 +1516,7 @@ void game1_timerCallback(TimerID timer) {
 			}
 		}
 		locateObject(g1ch, g1_scene, g1cx, g1cy);
-		setTimer(g1_move_t, 0.015f);
+		setTimer(g1_move_t, 0.02f);
 		startTimer(g1_move_t);
 	}
 
