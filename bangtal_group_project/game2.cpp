@@ -24,7 +24,7 @@
 
 using namespace std;
 
-extern SceneID mapscene;
+extern SceneID mapscene, g3_scene;
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern int nowgamenum;
 extern SoundID introbgm;
@@ -443,6 +443,10 @@ void game2_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 	}
 	if (object == g2_restartbutton) {
 		g2_restart();
+	}
+	if (object == g2_nextbutton) {
+		enterScene(g3_scene);
+		nowgamenum = 3;
 	}
 
 	if (object == g2_startbutton) {
