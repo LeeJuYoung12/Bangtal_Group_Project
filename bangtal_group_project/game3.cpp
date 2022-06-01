@@ -501,6 +501,7 @@ void game3_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		hideObject(g3_clearback);
 		hideObject(g3_nextbutton);
 		enterScene(g4_scene);
+		nowgamenum = 4;
 
 		//이부분 수정 부탁드립니다!
 	}
