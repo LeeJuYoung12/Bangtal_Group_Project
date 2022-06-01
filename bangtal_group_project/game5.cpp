@@ -11,7 +11,7 @@ extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool
 extern int nowgamenum;
 extern SceneID mapscene;
 extern bool g5_cleared;
-
+extern SoundID introbgm;
 void g5_exam(int x, int y);
 
 int g5_skeleton3_x[32] = { 0,150,0,0,0,0,84,84,168,380,380,380,380,380,380,380,542,542,542,542,542,542,542,461,780,860,940,1020,1100,785,1100,785 };
@@ -36,7 +36,7 @@ bool g5_attacking = false;
 SceneID g5_scene;
 ObjectID g5_tree3[38], g5ch, g5_skeleton3[32][8], g5_clear_zone, g5_attackeffect[4], g5_boxs3[6], g5_gomapbutton, g5_restartbutton, g5_nextbutton, g5_deathback, g5_clearback;
 TimerID g5_move_t, g5_moveskeleton_t, g5_update_t, g5_effectmove_t, g5_skeletoneimage_t;
-SoundID g5_boxsound;
+SoundID g5_boxsound, g5_mapbgm;
 
 ObjectID g5_thorns3[42];
 
@@ -58,31 +58,31 @@ void g5_install_s3()
 
 	for (i = 0; i < 7; i++)
 	{
-		g5_tree3[i] = createObject("image/game1/g1_tree1.png", g5_scene, 200, i * 90, true, 1.f);
-		g5_tree3[i + 7] = createObject("image/game1/g1_tree1.png", g5_scene, 270, i * 90, true, 1.f);
+		g5_tree3[i] = createObject("image/game5/g1_tree1.png", g5_scene, 200, i * 90, true, 1.f);
+		g5_tree3[i + 7] = createObject("image/game5/g1_tree1.png", g5_scene, 270, i * 90, true, 1.f);
 	}
 
 	for (i = 0; i < 5; i++)
 	{
-		g5_tree3[i + 14] = createObject("image/game1/g1_tree1.png", g5_scene, 610, 150 + i * 90, true, 1.f);
-		g5_tree3[i + 19] = createObject("image/game1/g1_tree1.png", g5_scene, 680, 150 + i * 90, true, 1.f);
+		g5_tree3[i + 14] = createObject("image/game5/g1_tree1.png", g5_scene, 610, 150 + i * 90, true, 1.f);
+		g5_tree3[i + 19] = createObject("image/game5/g1_tree1.png", g5_scene, 680, 150 + i * 90, true, 1.f);
 	}
 
 	for (i = 0; i < 7; i++)
 	{
-		g5_tree3[i + 24] = createObject("image/game1/g1_tree1.png", g5_scene, 1150, 100 + i * 90, true, 1.f);
-		g5_tree3[i + 31] = createObject("image/game1/g1_tree1.png", g5_scene, 1220, 100 + i * 90, true, 1.f);
+		g5_tree3[i + 24] = createObject("image/game5/g1_tree1.png", g5_scene, 1150, 100 + i * 90, true, 1.f);
+		g5_tree3[i + 31] = createObject("image/game5/g1_tree1.png", g5_scene, 1220, 100 + i * 90, true, 1.f);
 	}
 
 	for (i = 0; i < 2; i++)
 	{
-		g5_thorns3[i] = createObject("image/game1/g1_thorn.png", g5_scene, 75, 560 + i * 25, true, 1);
-		g5_thorns3[i + 2] = createObject("image/game1/g1_thorn.png", g5_scene, 100, 560 + i * 25, true, 1);
+		g5_thorns3[i] = createObject("image/game5/g1_thorn.png", g5_scene, 75, 560 + i * 25, true, 1);
+		g5_thorns3[i + 2] = createObject("image/game5/g1_thorn.png", g5_scene, 100, 560 + i * 25, true, 1);
 	}
 	for (i = 0; i < 19; i++)
 	{
-		g5_thorns3[i + 4] = createObject("image/game1/g1_thorn.png", g5_scene, 465, 140 + i * 25, true, 1);
-		g5_thorns3[i + 23] = createObject("image/game1/g1_thorn.png", g5_scene, 490, 140 + i * 25, true, 1);
+		g5_thorns3[i + 4] = createObject("image/game5/g1_thorn.png", g5_scene, 465, 140 + i * 25, true, 1);
+		g5_thorns3[i + 23] = createObject("image/game5/g1_thorn.png", g5_scene, 490, 140 + i * 25, true, 1);
 	}
 
 	for (i = 0; i < 6; i++)
@@ -93,14 +93,14 @@ void g5_install_s3()
 
 	for (i = 0; i < 32; i++)
 	{
-		g5_skeleton3[i][0] = createObject("image/game1/g1_skeleton1.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][1] = createObject("image/game1/g1_skeleton2.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][2] = createObject("image/game1/g1_skeleton3.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][3] = createObject("image/game1/g1_skeleton4.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][4] = createObject("image/game1/g1_skeleton5.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][5] = createObject("image/game1/g1_skeleton6.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][6] = createObject("image/game1/g1_skeleton7.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
-		g5_skeleton3[i][7] = createObject("image/game1/g1_skeleton8.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][0] = createObject("image/game5/g1_skeleton1.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][1] = createObject("image/game5/g1_skeleton2.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][2] = createObject("image/game5/g1_skeleton3.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][3] = createObject("image/game5/g1_skeleton4.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][4] = createObject("image/game5/g1_skeleton5.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][5] = createObject("image/game5/g1_skeleton6.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][6] = createObject("image/game5/g1_skeleton7.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
+		g5_skeleton3[i][7] = createObject("image/game5/g1_skeleton8.png", g5_scene, g5_skeleton3_x[i], g5_skeleton3_y[i], false, 0.25f);
 	}
 
 }
@@ -110,7 +110,7 @@ void g5_blocks3()
 	if (g5cx < 0 || g5cx + g5_ch_x>1280 || g5cy < 0 || g5cy + g5_ch_y>720) {
 		g5cx -= g5dx; g5cy -= g5dy;
 	}
-	if ((g5cx + g5_ch_x < 410 && g5cx + g5_ch_x>230) && g5cy + g5_ch_y < 690) {
+	if ((g5cx + g5_ch_x < 412 && g5cx + g5_ch_x>230) && g5cy + g5_ch_y < 690) {
 		g5cx -= g5dx; g5cy -= g5dy;
 	}
 	if ((g5cx + g5_ch_x < 820 && g5cx + g5_ch_x>640) && (g5cy + g5_ch_y < 670 && g5cy + g5_ch_y >160)) {
@@ -504,7 +504,8 @@ void game5_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		g5_gomapbutton = createObject("image/gomap.png", g5_scene, 300, 200, false, 1.3f);
 
 		enterScene(mapscene);
-
+		stopSound(g5_mapbgm);
+		playSound(introbgm);
 	}
 	if (object == g5_restartbutton) {
 		g5_restart();
@@ -689,7 +690,9 @@ void game5_timerCallback(TimerID timer) {
 
 //사운드콜백함수
 void game5_soundCallback(SoundID sound) {
-
+	if (sound == g5_mapbgm) {
+		playSound(g5_mapbgm);
+	}
 }
 
 //키보드콜백함수
@@ -733,7 +736,7 @@ void game5_keyboardCallback(KeyCode code, KeyState state) {
 
 void game5_main() {
 
-	g5_scene = createScene("game5", "image/game1/g1_background.png");
+	g5_scene = createScene("game5", "image/game5/g5_map.png");
 
 	g5ch = createObject("image/game1/player1.png", g5_scene, g5cx, g5cy, true, 0.7f);
 
@@ -808,5 +811,5 @@ void game5_main() {
 	g5_skeletoneimage_t = createTimer(0.01f);
 	startTimer(g5_skeletoneimage_t);
 
-
+	g5_mapbgm = createSound("sound/game5/g5_mapsound.mp3");
 }

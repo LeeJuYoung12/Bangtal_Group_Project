@@ -4,10 +4,11 @@
 
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern SceneID g1_scene, g2_scene, g3_scene, g4_scene, g5_scene;
-extern SoundID g4_mapbgm;
+extern SoundID g1_mapbgm, g2_mapbgm, g3_mapbgm, g4_mapbgm, g5_mapbgm;
 
 SceneID lobbyscene, mapscene;
 ObjectID startbutton, endbutton, portalbutton[5];
+ObjectID explain[5];
 SoundID introbgm;
 TimerID lobby_update_t;
 // 0가 왼쪽위, 1이 왼쪽아래, 2가 오른쪽아래, 3이 오른쪽위, 4가 가운데
@@ -28,38 +29,74 @@ void lobby_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 	}
 
 	else if (object == portalbutton[0]) {
+		showObject(explain[0]);
+
+	}
+
+	else if (object == portalbutton[1]&&g1_cleared) {
+		showObject(explain[1]);
+
+	}
+	else if (object == portalbutton[2]&&g5_cleared) {
+		showObject(explain[2]);
+
+	}
+
+	else if (object == portalbutton[3]&& g2_cleared) {
+		showObject(explain[3]);
+
+	}
+
+	else if (object == portalbutton[4]&&g3_cleared){
+		showObject(explain[4]);
+	
+	}
+
+	else if (object == explain[0]) {
 		enterScene(g1_scene);
+		hideObject(explain[0]);
 		stopSound(introbgm);
+		playSound(g1_mapbgm);
 		nowgamenum = 1;
-	}
 
-	else if (object == portalbutton[1]) {
+	}
+	else if (object == explain[1]) {
 		enterScene(g5_scene);
+		hideObject(explain[1]);
 		stopSound(introbgm);
+		playSound(g5_mapbgm);
 		nowgamenum = 5;
+
 	}
-	else if (object == portalbutton[2]) {
+	else if (object == explain[2]) {
 		enterScene(g2_scene);
+		hideObject(explain[2]);
 		stopSound(introbgm);
+		playSound(g2_mapbgm);
 		nowgamenum = 2;
-	}
 
-	else if (object == portalbutton[3]) {
+	}
+	else if (object == explain[3]) {
 		enterScene(g3_scene);
+		hideObject(explain[3]);
 		stopSound(introbgm);
+		playSound(g3_mapbgm);
 		nowgamenum = 3;
-	}
 
-	else if (object == portalbutton[4]){
+	}
+	else if (object == explain[4]) {
 		enterScene(g4_scene);
+		hideObject(explain[4]);
 		stopSound(introbgm);
 		playSound(g4_mapbgm);
 		nowgamenum = 4;
+	
 	}
 
 	else if (object == endbutton) {
 		endGame();
 	}
+	
 }
 
 //타이머콜백함수
@@ -116,4 +153,10 @@ void lobby_main() {
 
 	lobby_update_t = createTimer(0.01f);
 	startTimer(lobby_update_t);
+
+	explain[0] = createObject("image/ex1.png", mapscene, 250, 150, false, 1.f);
+	explain[1] = createObject("image/ex2.png", mapscene, 250, 150, false, 1.f);
+	explain[2] = createObject("image/ex3.png", mapscene, 250, 150, false, 1.f);
+	explain[3] = createObject("image/ex4.png", mapscene, 250, 150, false, 1.f);
+	explain[4] = createObject("image/ex5.png", mapscene, 250, 150, false, 1.f);
 }

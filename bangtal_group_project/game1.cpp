@@ -5,7 +5,7 @@
 #define g1_effect_y 261*0.3
 #include <stdio.h>
 #include <bangtal.h>
-
+extern SoundID introbgm;
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern int nowgamenum;
 extern SceneID mapscene;
@@ -49,7 +49,7 @@ bool g1_attacking = false;
 SceneID g1_scene;
 ObjectID g1_tree1[24], g1_tree2[50], g1ch, g1_skeleton1[15][8], g1_skeleton2[11][8], g1_clear_zone, g1_attackeffect[4], g1_boxs2[8], g1_gomapbutton, g1_restartbutton, g1_nextbutton, g1_deathback, g1_clearback;
 TimerID g1_move_t, g1_moveskeleton_t, g1_update_t, g1_effectmove_t, g1_skeletoneimage_t, g1_clearcheck_t;
-SoundID g1_boxsound;
+SoundID g1_boxsound, g1_mapbgm;
 
 ObjectID g1_thorns1[92], g1_thorns2[70];
 
@@ -1021,7 +1021,8 @@ void game1_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		g1_gomapbutton = createObject("image/gomap.png", g1_scene, 300, 200, false, 1.3f);
 
 		enterScene(mapscene);
-
+		stopSound(g1_mapbgm);
+		playSound(introbgm);
 	}
 	if (object == g1_restartbutton) {
 		g1_restart();
@@ -1383,6 +1384,9 @@ void game1_soundCallback(SoundID sound) {
 		playSound(g1_boxsound);
 		stopSound(g1_boxsound);
 	}
+	if (sound == g1_mapbgm) {
+		playSound(g1_mapbgm);
+	}
 }
 
 //키보드콜백함수    (바꿀필요 X)
@@ -1510,4 +1514,6 @@ void game1_main() {
 
 	g1_clearcheck_t = createTimer(0.1f);
 	startTimer(g1_clearcheck_t);
+
+	g1_mapbgm = createSound("sound/game1/g1_mapsound.mp3");
 }

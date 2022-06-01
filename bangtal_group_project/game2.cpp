@@ -693,5 +693,5 @@ void game2_main() {
 	g2_block_t = createTimer(0.01f);
 	g2_jump_t = createTimer(0.1f);
 
-
+	g2_mapbgm= createSound("sound/game2/g2_mapsound.mp3");
 }
