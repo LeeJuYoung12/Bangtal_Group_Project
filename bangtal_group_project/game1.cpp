@@ -9,6 +9,7 @@
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern int nowgamenum;
 extern SceneID mapscene;
+extern bool g1_cleared;
 
 int g1_tree_x[26] = { 0, 50,100,150,200,250,300,350,400,450,500,550,600,650,700,750,800,850,900,950,1000,1050,1100,1150,1200,1250 };
 int g1_tree_y[15] = { 0, 50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700 };
@@ -35,7 +36,7 @@ int g1_box_ys3[6] = { 0,50,100,0,50,100 };
 int g1_box_xs3b[6] = { 650,650,650,700,700,700 };
 int g1_box_ys3b[6] = { 0,50,100,0,50,100 };
 
-int g1_speed = 1, g1dx = 0, g1dy = 0, g1cx = 0, g1cy = 0, g1_skeleton_speed = 3, g1_chway = 3, g1_attackeffectx, g1_attackeffecty, g1_effectspeed = 4;
+int g1_speed = 6, g1dx = 0, g1dy = 0, g1cx = 0, g1cy = 0, g1_skeleton_speed = 3, g1_chway = 3, g1_attackeffectx, g1_attackeffecty, g1_effectspeed = 4;
 long long g1_attacknum = 2;
 
 int g1_clearcheck = 0;
@@ -1091,6 +1092,8 @@ void g1_clear() {
 		stopTimer(g1_effectmove_t);
 		stopTimer(g1_skeletoneimage_t);
 		g1_clearcheck = 1;
+
+		g1_cleared = true;
 	}
 }
 

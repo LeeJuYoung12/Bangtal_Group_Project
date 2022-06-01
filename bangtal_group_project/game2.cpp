@@ -28,6 +28,7 @@ extern SceneID mapscene;
 extern ObjectID createObject(const char* name, SceneID scene, int x, int y, bool shown, float size);
 extern int nowgamenum;
 extern SoundID introbgm;
+extern bool g2_cleared;
 //게임은 6으로
 int g2_speed = 6, g2dx = 0, g2cx = 100, g2cy = 75,g2_b4Count=0;
 
@@ -72,7 +73,7 @@ list<Floor> scene_rightEscalator, scene2_rightEscalator, scene3_rightEscalator;
 
 void makeAndPush(const char* url, SceneID scene, int x, int y, int x_size, int y_size, const char* type) {
 	if (type == "potal") {
-		createObject(url, scene, x, y, true, 0.125f);
+		createObject(url, scene, x, y, true, 1.f);
 
 	}else
 	createObject(url, scene, x, y, true, 1);
@@ -423,7 +424,7 @@ void g2_clear() {
 	stopTimer(g2_jump_t);
 
 	g2_playing = false;
-
+	g2_cleared = true;
 
 }
 
@@ -660,9 +661,9 @@ void game2_keyboardCallback(KeyCode code, KeyState state) {
 void game2_main() {
 
 	//���
-	g2_scene = createScene("game2", "image/game2/background.png");
-	g2_scene2 = createScene("game2", "image/game2/background.png");
-	g2_scene3 = createScene("game2", "image/game2/background.png");
+	g2_scene = createScene("game2", "image/game2/background1.png");
+	g2_scene2 = createScene("game2", "image/game2/background2.png");
+	g2_scene3 = createScene("game2", "image/game2/background3.png");
 
 	//ĳ����
 	g2ch = createObject("image/game2/character.png", g2_scene, g2cx, g2cy, true, 0.7f);
@@ -677,8 +678,8 @@ void game2_main() {
 	g2_restartbutton = createObject("image/restart.png", g2_scene, 700, 200, false, 1.3f);
 	g2_startbutton = createObject("image/start.png", g2_scene, 450, 300, true, 0.8f);
 	g2_endgame = createObject("image/end.png", g2_scene2, 550, 450, false, 0.8f);
-	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 300, 200, false, 1.3f);
-	g2_nextbutton = createObject("image/next.png", g2_scene, 700, 200, false, 1.3f);
+	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 500, 100, false, 1.3f);
+
 	
 
 	
