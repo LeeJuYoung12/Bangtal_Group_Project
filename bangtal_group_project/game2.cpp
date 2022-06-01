@@ -390,7 +390,7 @@ void g2_death() {
 	}
 
 	locateObject(g2_deathback, nowScene, 270, 300);
-	locateObject(g2_gomapbutton, nowScene, 300, 200);
+	locateObject(g2_gomapbutton, nowScene, 500, 200);
 	locateObject(g2_restartbutton, nowScene, 700, 200);
 
 	showObject(g2_deathback);
@@ -409,7 +409,7 @@ void g2_death() {
 void g2_clear() {
 
 	locateObject(g2_clearback, g2_scene3, 270, 300);
-	locateObject(g2_gomapbutton, g2_scene3, 300, 100);
+	locateObject(g2_gomapbutton, g2_scene3, 500, 200);
 	locateObject(g2_nextbutton, g2_scene3, 700, 100);
 
 	showObject(g2_clearback);
@@ -678,7 +678,7 @@ void game2_main() {
 	g2_restartbutton = createObject("image/restart.png", g2_scene, 700, 200, false, 1.3f);
 	g2_startbutton = createObject("image/start.png", g2_scene, 450, 300, true, 0.8f);
 	g2_endgame = createObject("image/end.png", g2_scene2, 550, 450, false, 0.8f);
-	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 500, 100, false, 1.3f);
+	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 500, 200, false, 1.3f);
 
 	
 
