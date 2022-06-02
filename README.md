@@ -9,7 +9,7 @@ Tower of the dragon은 마을을 침범하는 드래곤을 잡기위해 주인�
 
 ![2](https://user-images.githubusercontent.com/101955125/171648644-0429b08b-e9d6-450d-84f7-a2ae1f56446e.png)
 
-start버튼을 누르면 위처럼 맵화면이 나옵니다. 드래곤을 잡기위해 하위 stage 4개를 클리어해야합니다. 파란색 버튼이 현재 갈 수 있는 stage이고, 검은색은 갈 수 없는 stage입니다. s파란색 버튼을 누르면 게임설명이 뜨는데 이를 마우스로 클릭시 인게임으로 이동합니다. 그리고 tage를 깰때마다 다음 stage가 열립니다.
+start버튼을 누르면 위처럼 맵화면이 나옵니다. 드래곤을 잡기위해서 하위 stage 4개를 클리어해야합니다. 파란색 버튼이 현재 갈 수 있는 Stage이고, 흰색은 갈 수 없는 Stage입니다. 파란색 버튼을 누르면 게임설명창이 뜨는데 이를 마우스로 클릭시 인게임으로 이동합니다. 그리고 Stage를 깰때마다 다음 Stage가 열립니다.
 
 ## Stage1
 ![5555](https://user-images.githubusercontent.com/101955125/171650007-7238af31-a18e-4c92-a8b6-b6f754112510.png)
