@@ -38,7 +38,7 @@ bool g2_jumping = true, g2_playing = false, g2_landing=false,g2_rightState=false
 
 SceneID g2_scene, g2_scene2, g2_scene3;
 ObjectID g2ch;
-ObjectID g2_gomapbutton, g2_restartbutton, g2_endingbutton, g2_deathback, g2_clearback, g2_startbutton, g2_nextbutton;
+ObjectID g2_gomapbutton, g2_restartbutton, g2_endingbutton, g2_deathback, g2_clearback, g2_startbutton;
 ObjectID g2_endingch, g2_endgame;
 TimerID g2_move_t, g2_update_t, g2_jump_t, g2_block_t;
 
@@ -364,7 +364,6 @@ void g2_restart() {
 	hideObject(g2_gomapbutton);
 	hideObject(g2_deathback);
 	hideObject(g2_clearback);
-	hideObject(g2_nextbutton);
 
 	locateObject(g2ch, g2_scene, 30, 390 * 0.4 - 1);
 	
@@ -390,7 +389,7 @@ void g2_death() {
 	}
 
 	locateObject(g2_deathback, nowScene, 270, 300);
-	locateObject(g2_gomapbutton, nowScene, 500, 200);
+	locateObject(g2_gomapbutton, nowScene, 300, 200);
 	locateObject(g2_restartbutton, nowScene, 700, 200);
 
 	showObject(g2_deathback);
@@ -410,11 +409,10 @@ void g2_clear() {
 
 	locateObject(g2_clearback, g2_scene3, 270, 300);
 	locateObject(g2_gomapbutton, g2_scene3, 500, 200);
-	locateObject(g2_nextbutton, g2_scene3, 700, 100);
+	
 
 	showObject(g2_clearback);
 	showObject(g2_gomapbutton);
-	showObject(g2_nextbutton);
 
 	
 
@@ -434,19 +432,15 @@ void game2_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 		hideObject(g2_deathback);
 		hideObject(g2_clearback);
 		hideObject(g2_gomapbutton);
-		hideObject(g2_nextbutton);
 		hideObject(g2_restartbutton);
 		showObject(g2_startbutton);
 		enterScene(mapscene);
 		stopSound(g2_mapbgm);
 		playSound(introbgm);
+		locateObject(g2_gomapbutton, g3_scene, 300, 200);
 	}
 	if (object == g2_restartbutton) {
 		g2_restart();
-	}
-	if (object == g2_nextbutton) {
-		enterScene(g3_scene);
-		nowgamenum = 3;
 	}
 
 	if (object == g2_startbutton) {
@@ -682,7 +676,7 @@ void game2_main() {
 	g2_restartbutton = createObject("image/restart.png", g2_scene, 700, 200, false, 1.3f);
 	g2_startbutton = createObject("image/start.png", g2_scene, 450, 300, true, 0.8f);
 	g2_endgame = createObject("image/end.png", g2_scene2, 550, 450, false, 0.8f);
-	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 500, 200, false, 1.3f);
+	g2_gomapbutton = createObject("image/gomap.png", g2_scene, 300, 200, false, 1.3f);
 
 	
 
