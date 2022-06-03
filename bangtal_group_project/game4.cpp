@@ -376,6 +376,7 @@ void game4_mouseCallback(ObjectID object, int x, int y, MouseAction action) {
 
 	if (object == g4_startbutton) {
 		g4_playing = true;
+		g4dx = 0;
 		startTimer(g4_beamcool_t);
 		startTimer(g4_firecool_t);
 		startTimer(g4_bossanimation_t);

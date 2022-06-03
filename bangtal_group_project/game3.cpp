@@ -5,9 +5,9 @@
 
 #define INITIAL_PLAYER_X 600
 #define INITIAL_PLAYER_Y 80
-#define JUMP_POWER 7
+#define JUMP_POWER 5.3
 #define PLAYER_SPEED 1
-#define FIRE_ANIM_TIME 20
+#define FIRE_ANIM_TIME 60
 
 using namespace std;
 
@@ -125,7 +125,7 @@ public:
 
 	void move() {
 		if (isJumping || !isGround)
-			dy -= 0.1f;
+			dy -= 0.07f;
 
 		x += dx;
 		y += dy;
@@ -167,7 +167,7 @@ public:
 
 class Thorn :public GameObject {
 public:
-	Thorn(int x_, int y_) :GameObject(x_, y_, 67, 35, "image/game3/thorn.png", g3_scene) {
+	Thorn(int x_, int y_) :GameObject(x_, y_, 58, 35, "image/game3/thorn.png", g3_scene) {
 		setLocation(x_, y_);
 	}
 };
@@ -224,7 +224,7 @@ public:
 				isAttack = false;
 				hideObject(*fire->gameObject);
 			}
-			else if (attack_time < FIRE_ANIM_TIME / 3 * 2) {
+			else if (attack_time < FIRE_ANIM_TIME / 5*3) {
 				showObject(*fire->gameObject);
 				fire->setLocation(x - 25 + (direction * 100), y, scene);
 				if (checkCollision(fire, g3_player)) {
@@ -236,7 +236,7 @@ public:
 	}
 
 
-	Enemy(int x_, int y_, int left, int right, SceneID scene) :GameObject(x_, y_, 69, 23, "image/game3/dragon_right.png", scene) {
+	Enemy(int x_, int y_, int left, int right, SceneID scene) :GameObject(x_, y_, 50, 23, "image/game3/dragon_right.png", scene) {
 		moveRange_left = left * 100;
 		moveRange_right = right * 100;
 	}
@@ -548,7 +548,7 @@ void game3_timerCallback(TimerID timer) {
 				AttackArea* a = &a_;
 
 				//용 공격 가동 범위 체크
-				if (checkCollision((a), g3_player)) {
+				if (checkCollision((a), g3_player)&&!enemy->isAttack) {
 
 					enemy->attack();
 
